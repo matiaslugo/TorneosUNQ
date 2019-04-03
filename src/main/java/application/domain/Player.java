@@ -13,29 +13,29 @@ public class Player {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
-    /*@ManyToOne(
+    @ManyToOne(
             cascade = CascadeType.ALL
     )
     @JoinColumn(name = "team_id")
-    private Team team;*/
+    private Team team;
 
     private String name;
     private String lastName;
     private Long dni;
-    /*@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-    private DateTime birthdate;*/
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    private DateTime birthdate;
     private boolean isStudent;
 
     public Player (){}
 
-    /*public Player(Team team, String name, String lastName, Long dni, DateTime birthdate, boolean isStudent) {
+    public Player(Team team, String name, String lastName, Long dni, DateTime birthdate, boolean isStudent) {
         //this.team = team;
         this.name = name;
         this.lastName = lastName;
         this.dni = dni;
         this.birthdate = birthdate;
         this.isStudent = isStudent;
-    }*/
+    }
 
     public Long getId() {
         return id;
@@ -69,13 +69,13 @@ public class Player {
         this.dni = dni;
     }
 
-  /*  public DateTime getBirthdate() {
+    public DateTime getBirthdate() {
         return birthdate;
     }
 
     public void setBirthdate(DateTime birthdate) {
         this.birthdate = birthdate;
-    }*/
+    }
 
     public boolean isStudent() {
         return isStudent;

@@ -9,11 +9,11 @@ public class Team {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
-    /*@ManyToOne(
+    @ManyToOne(
             cascade = CascadeType.ALL
     )
     @JoinColumn(name = "championship_id")
-    private Championship championship;*/
+    private Championship championship;
 
     private String name;
 
@@ -24,10 +24,10 @@ public class Team {
         this.name = name;
     }
 
-    /*public Team(Championship championship, String name) {
+    public Team(Championship championship, String name) {
         //this.championship = championship;
         this.name = name;
-    }*/
+    }
 
     public Long getId() {
         return id;
@@ -45,11 +45,11 @@ public class Team {
         this.name = name;
     }
 
-    /*public Championship getChampionship() {
+    public Championship getChampionship() {
         return championship;
     }
 
     public void setChampionship(Championship championship) {
         this.championship = championship;
-    }*/
+    }
 }
