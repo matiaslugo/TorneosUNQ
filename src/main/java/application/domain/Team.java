@@ -1,6 +1,8 @@
 package application.domain;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Team {
@@ -9,24 +11,19 @@ public class Team {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne(
-            cascade = CascadeType.ALL
-    )
-    @JoinColumn(name = "championship_id")
-    private Championship championship;
-
     private String name;
 
+    @OneToMany(
+            cascade = CascadeType.ALL
+    )
+    @JoinColumn(name = "team_id")
+    private List<Player> players = new ArrayList<Player>();
 
     public Team() {}
 
-    public Team(String name) {
+    public Team(String name, List<Player> players) {
         this.name = name;
-    }
-
-    public Team(Championship championship, String name) {
-        //this.championship = championship;
-        this.name = name;
+        this.players = players;
     }
 
     public Long getId() {
@@ -45,11 +42,11 @@ public class Team {
         this.name = name;
     }
 
-    public Championship getChampionship() {
-        return championship;
+    public List<Player> getPlayers() {
+        return players;
     }
 
-    public void setChampionship(Championship championship) {
-        this.championship = championship;
+    public void setPlayers(List<Player> players) {
+        this.players = players;
     }
 }

@@ -13,23 +13,27 @@ public class Player {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne(
-            cascade = CascadeType.ALL
-    )
-    @JoinColumn(name = "team_id")
-    private Team team;
-
     private String name;
+
     private String lastName;
+
     private Long dni;
+
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime birthdate;
+
     private boolean isStudent;
 
     public Player (){}
 
-    public Player(Team team, String name, String lastName, Long dni, DateTime birthdate, boolean isStudent) {
-        //this.team = team;
+    public Player(String name, String lastName) {
+
+        this.name = name;
+        this.lastName = lastName;
+    }
+
+    public Player(String name, String lastName, Long dni, DateTime birthdate, boolean isStudent) {
+
         this.name = name;
         this.lastName = lastName;
         this.dni = dni;

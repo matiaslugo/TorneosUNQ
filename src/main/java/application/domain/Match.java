@@ -13,28 +13,70 @@ public class Match {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne(
-            cascade = CascadeType.ALL
+    @OneToOne(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
     )
-    @JoinColumn(name = "team_id")
     private Team teamA;
 
-    /*@ManyToOne(
-            cascade = CascadeType.ALL
+    @OneToOne(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
     )
-    @JoinColumn(name = "team_id")
-    private Team teamB;*/
+    private Team teamB;
 
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime date;
+
     private LocalTime startTime;
 
     public Match(){}
 
-    public Match(Team teamA/*,Team teamB*/, DateTime date, LocalTime startTime) {
+
+    public Match(Team teamA, Team teamB, DateTime date, LocalTime startTime) {
         this.teamA = teamA;
-        /*this.teamB = teamB;*/
+        this.teamB = teamB;
         this.date = date;
+        this.startTime = startTime;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Team getTeamA() {
+        return teamA;
+    }
+
+    public void setTeamA(Team teamA) {
+        this.teamA = teamA;
+    }
+
+    public Team getTeamB() {
+        return teamB;
+    }
+
+    public void setTeamB(Team teamB) {
+        this.teamB = teamB;
+    }
+
+    public DateTime getDate() {
+        return date;
+    }
+
+    public void setDate(DateTime date) {
+        this.date = date;
+    }
+
+    public LocalTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalTime startTime) {
         this.startTime = startTime;
     }
 }
