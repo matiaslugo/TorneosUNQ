@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @Transactional
 @RestController
 public class ChampionshipController {
@@ -47,5 +48,6 @@ public class ChampionshipController {
     public Championship crearTorneo(@Valid @RequestBody Championship torneo) {
         return repository.save(torneo);
     }
+
 
 }
