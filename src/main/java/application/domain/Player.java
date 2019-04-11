@@ -17,7 +17,7 @@ public class Player {
 
     private String lastName;
 
-    private Long dni;
+    private int dni;
 
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime birthdate;
@@ -32,7 +32,7 @@ public class Player {
         this.lastName = lastName;
     }
 
-    public Player(String name, String lastName, Long dni, DateTime birthdate, boolean isStudent) {
+    public Player(String name, String lastName, int dni, DateTime birthdate, boolean isStudent) {
 
         this.name = name;
         this.lastName = lastName;
@@ -65,11 +65,11 @@ public class Player {
         this.lastName = lastName;
     }
 
-    public Long getDni() {
+    public int getDni() {
         return dni;
     }
 
-    public void setDni(Long dni) {
+    public void setDni(int dni) {
         this.dni = dni;
     }
 
