@@ -22,6 +22,7 @@ import java.nio.file.Paths;
 
 @Transactional
 @RestController
+@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST})
 public class PlayerController {
 
     //Save the uploaded file to this folder
