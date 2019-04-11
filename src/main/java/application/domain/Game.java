@@ -7,7 +7,7 @@ import java.time.LocalTime;
 import org.hibernate.annotations.Type;
 
 @Entity
-public class Match {
+public class Game {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -30,10 +30,10 @@ public class Match {
 
     private LocalTime startTime;
 
-    public Match(){}
+    public Game(){}
 
 
-    public Match(Team teamA, Team teamB, DateTime date, LocalTime startTime) {
+    public Game(Team teamA, Team teamB, DateTime date, LocalTime startTime) {
         this.teamA = teamA;
         this.teamB = teamB;
         this.date = date;
