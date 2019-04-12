@@ -25,31 +25,17 @@ import java.nio.file.Paths;
 @CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST})
 public class PlayerController {
 
-    //Save the uploaded file to this folder
-    private static String UPLOADED_FOLDER = "/home/victorqac/Descargas/";
-
     @Autowired
     private PlayerRepository repository;
 
     @GetMapping("/jugadores")
     public Collection<Player> getAll() throws IOException, InvalidFormatException {
 
-        /*String PLAYER_XLSX_FILE_PATH = "./jugadores-xlsx-file.xlsx";
-
-        Player player = new Player();
-
-        List<Player> players = player.setPlayerFromExcel(PLAYER_XLSX_FILE_PATH);
-
-        for (int i = 0; i < players.size(); ++i) {
-
-            repository.save(players.get(i));
-        }*/
-
         return (Collection<Player>) repository.findAll().stream()
                 .collect(Collectors.toList());
     }
 
-    @PostMapping("/upload") // //new annotation since 4.3
+    /*@PostMapping("/upload") // //new annotation since 4.3
     public String singleFileUpload(@RequestParam("file") MultipartFile file,
                                    RedirectAttributes redirectAttributes) {
 
@@ -92,5 +78,6 @@ public class PlayerController {
     @GetMapping("/uploadStatus")
     public String uploadStatus() {
         return "uploadStatus";
-    }
+    }*/
+
 }

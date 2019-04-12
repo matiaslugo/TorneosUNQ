@@ -1,16 +1,10 @@
 package application.domain;
 
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.ss.usermodel.*;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.awt.*;
 
 @Entity
 public class Player {
@@ -25,11 +19,12 @@ public class Player {
 
     private int dni;
 
-
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime birthdate;
 
     private boolean isStudent;
+
+    private String photo;
 
     public Player (){}
 
@@ -47,6 +42,15 @@ public class Player {
         this.dni = dni;
         this.birthdate = birthdate;
         this.isStudent = isStudent;
+    }
+
+    public Player(String name, String lastName, int dni, DateTime birthdate, boolean isStudent, String photo) {
+        this.name = name;
+        this.lastName = lastName;
+        this.dni = dni;
+        this.birthdate = birthdate;
+        this.isStudent = isStudent;
+        this.photo = photo;
     }
 
     public Long getId() {
@@ -98,68 +102,11 @@ public class Player {
         isStudent = student;
     }
 
-    public List<Player> setPlayerFromExcel(String nameExcel) throws IOException, InvalidFormatException {
+    public String getPhoto() {
+        return photo;
+    }
 
-        List<Player> players = new ArrayList<Player>();
-
-        Workbook workbook = WorkbookFactory.create(new File(nameExcel));
-
-        // Getting the Sheet at index zero
-        Sheet sheet = workbook.getSheetAt(0);
-
-        // Create a DataFormatter to format and get each cell's value as String
-        DataFormatter dataFormatter = new DataFormatter();
-
-        int index = 0;
-
-        for (Row row: sheet) {
-            index ++;
-
-            if(index != 1) {
-                String name = "";
-                String lastName = "";
-                Integer dni = 0;
-                DateTime birthdate = null;
-                boolean isStudent = true;
-
-                for (Cell cell : row) {
-                    int numberColumn = cell.getColumnIndex();
-
-                    String cellValue = dataFormatter.formatCellValue(cell);
-
-                    switch (numberColumn) {
-                        case 0:
-                            name = cellValue;
-                            break;
-                        case 1:
-                            lastName = cellValue;
-                            break;
-                        case 2:
-                            dni = Integer.parseInt(cellValue);
-                            break;
-                        case 3:
-                            birthdate = DateTime.parse(cellValue);
-                            break;
-                        case 4:
-                            isStudent = Boolean.parseBoolean(cellValue);
-                            break;
-                        default:
-                            break;
-                    }
-
-                }
-
-                if(name != "") {
-                    Player player = new Player(name, lastName, dni, birthdate, isStudent);
-
-                    players.add(player);
-                }
-            }
-        }
-
-        // Closing the workbook
-        workbook.close();
-
-        return players;
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 }
