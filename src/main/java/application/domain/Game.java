@@ -4,6 +4,9 @@ import org.joda.time.DateTime;
 
 import javax.persistence.*;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.annotations.Type;
 
 @Entity
@@ -30,6 +33,16 @@ public class Game {
 
     private LocalTime startTime;
 
+    private int goalsTeamA;
+
+    private int goalsTeamB;
+
+    @OneToMany(
+            cascade = CascadeType.ALL
+    )
+    @JoinColumn(name = "game_id")
+    private List<Statistic> statistics = new ArrayList<Statistic>();
+
     public Game(){}
 
 
@@ -38,6 +51,16 @@ public class Game {
         this.teamB = teamB;
         this.date = date;
         this.startTime = startTime;
+    }
+
+    public Game(Team teamA, Team teamB, DateTime date, LocalTime startTime, int goalsTeamA, int goalsTeamB, List<Statistic> statistics) {
+        this.teamA = teamA;
+        this.teamB = teamB;
+        this.date = date;
+        this.startTime = startTime;
+        this.goalsTeamA = goalsTeamA;
+        this.goalsTeamB = goalsTeamB;
+        this.statistics = statistics;
     }
 
     public Long getId() {
@@ -78,5 +101,29 @@ public class Game {
 
     public void setStartTime(LocalTime startTime) {
         this.startTime = startTime;
+    }
+
+    public int getGoalsTeamA() {
+        return goalsTeamA;
+    }
+
+    public void setGoalsTeamA(int goalsTeamA) {
+        this.goalsTeamA = goalsTeamA;
+    }
+
+    public int getGoalsTeamB() {
+        return goalsTeamB;
+    }
+
+    public void setGoalsTeamB(int goalsTeamB) {
+        this.goalsTeamB = goalsTeamB;
+    }
+
+    public List<Statistic> getStatistics() {
+        return statistics;
+    }
+
+    public void setStatistics(List<Statistic> statistics) {
+        this.statistics = statistics;
     }
 }

@@ -31,12 +31,27 @@ public class Championship {
     @JoinColumn(name = "championship_id")
     private List<Team> teams = new ArrayList<Team>();
 
+    @OneToMany(
+            cascade = CascadeType.ALL
+    )
+    @JoinColumn(name = "championship_id")
+    private List<Game> games = new ArrayList<Game>();
+
     public Championship(){}
 
     public Championship(String name, String description, List<Team> teams) {
         this.name = name;
         this.description = description;
         this.teams = teams;
+    }
+
+    public Championship(String name, String description, DateTime startDate, DateTime finishDate, List<Team> teams, List<Game> games) {
+        this.name = name;
+        this.description = description;
+        this.startDate = startDate;
+        this.finishDate = finishDate;
+        this.teams = teams;
+        this.games = games;
     }
 
     /*public Championship(String name, String description, DateTime startDate, DateTime finishDate, List<Team> teams) {
@@ -93,5 +108,13 @@ public class Championship {
 
     public void setTeams(List<Team> teams) {
         this.teams = teams;
+    }
+
+    public List<Game> getGames() {
+        return games;
+    }
+
+    public void setGames(List<Game> games) {
+        this.games = games;
     }
 }
