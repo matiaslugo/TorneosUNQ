@@ -1,7 +1,6 @@
 package application.controller;
 
-import application.domain.Player;
-import application.domain.Statistic;
+import application.domain.StatisticPlayer;
 import application.domain.Team;
 import application.repository.GameRepository;
 import application.repository.TeamRepository;
@@ -39,14 +38,14 @@ public class GameController {
         Team qac = repositoryTeam.findById((long) 87).get();
         Team boca = repositoryTeam.findById((long) 93).get();
 
-        Statistic st1 = new Statistic(qac.getPlayers().get(1),1,1,0);
-        Statistic st2 = new Statistic(boca.getPlayers().get(1),1,0,0);
+        StatisticPlayer st1 = new StatisticPlayer(qac.getPlayers().get(1),1,1,0);
+        StatisticPlayer st2 = new StatisticPlayer(boca.getPlayers().get(1),1,0,0);
 
-        List<Statistic> statistics = new ArrayList<Statistic>();
-        statistics.add(st1);
-        statistics.add(st2);
+        List<StatisticPlayer> statisticPlayers = new ArrayList<StatisticPlayer>();
+        statisticPlayers.add(st1);
+        statisticPlayers.add(st2);
 
-        Game game = new Game(qac,boca, new DateTime("1977-10-06"),LocalTime.now(),1,1,statistics);
+        Game game = new Game(qac,boca, new DateTime("1977-10-06"),LocalTime.now(),1,1,1, statisticPlayers);
 
         repository.save(game);
 

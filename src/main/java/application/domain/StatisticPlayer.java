@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.time.LocalTime;
 
 @Entity
-public class Statistic {
+public class StatisticPlayer {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -25,9 +25,9 @@ public class Statistic {
 
     private int redCard;
 
-    public Statistic(){};
+    public StatisticPlayer(){};
 
-    public Statistic(Player player, int goals, int yellowCard, int redCard) {
+    public StatisticPlayer(Player player, int goals, int yellowCard, int redCard) {
         this.player = player;
         this.goals = goals;
         this.yellowCard = yellowCard;
