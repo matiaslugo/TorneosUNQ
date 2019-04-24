@@ -2,11 +2,16 @@ package application.domain;
 
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.awt.*;
+import java.sql.Blob;
+
+import static java.sql.JDBCType.BLOB;
 
 @Entity
+@Transactional
 public class Player {
 
     @Id
@@ -24,7 +29,9 @@ public class Player {
 
     private boolean isStudent;
 
-    private String photo;
+    @Lob
+    //@Column(length=100000,columnDefinition="BLOB")
+    private byte[] photo;
 
     public Player (){}
 
@@ -44,7 +51,7 @@ public class Player {
         this.isStudent = isStudent;
     }
 
-    public Player(String name, String lastName, int dni, DateTime birthdate, boolean isStudent, String photo) {
+    public Player(String name, String lastName, int dni, DateTime birthdate, boolean isStudent, byte[] photo) {
         this.name = name;
         this.lastName = lastName;
         this.dni = dni;
@@ -102,11 +109,11 @@ public class Player {
         isStudent = student;
     }
 
-    public String getPhoto() {
+    public byte[] getPhoto() {
         return photo;
     }
 
-    public void setPhoto(String photo) {
+    public void setPhoto(byte[] photo) {
         this.photo = photo;
     }
 }

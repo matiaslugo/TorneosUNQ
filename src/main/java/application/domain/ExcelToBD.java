@@ -101,7 +101,7 @@ public class ExcelToBD {
                 }
 
                 if(name != "") {
-                    Player player = new Player(name, lastName, dni, birthdate, isStudent,photo);
+                    Player player = new Player(name, lastName, dni, birthdate, isStudent);
 
                     players.add(player);
                 }
