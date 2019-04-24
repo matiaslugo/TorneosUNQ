@@ -29,38 +29,25 @@ public class Championship {
             cascade = CascadeType.ALL
     )
     @JoinColumn(name = "championship_id")
-    private List<Team> teams = new ArrayList<Team>();
+    private List<Positions> positions = new ArrayList<Positions>();
 
-    @OneToMany(
-            cascade = CascadeType.ALL
+    @OneToOne(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
     )
-    @JoinColumn(name = "championship_id")
-    private List<Game> games = new ArrayList<Game>();
+    private Fixture fixture;
 
     public Championship(){}
 
-    public Championship(String name, String description, List<Team> teams) {
-        this.name = name;
-        this.description = description;
-        this.teams = teams;
-    }
-
-    public Championship(String name, String description, DateTime startDate, DateTime finishDate, List<Team> teams, List<Game> games) {
+    public Championship(String name, String description, DateTime startDate, DateTime finishDate, List<Positions> positions, Fixture fixture) {
         this.name = name;
         this.description = description;
         this.startDate = startDate;
         this.finishDate = finishDate;
-        this.teams = teams;
-        this.games = games;
+        this.positions = positions;
+        this.fixture = fixture;
     }
 
-    /*public Championship(String name, String description, DateTime startDate, DateTime finishDate, List<Team> teams) {
-        this.name = name;
-        this.description = description;
-        this.startDate = startDate;
-        this.finishDate = finishDate;
-        this.teams = teams;
-    }*/
 
     public Long getId() {
         return id;
@@ -102,19 +89,19 @@ public class Championship {
         this.finishDate = finishDate;
     }
 
-    public List<Team> getTeams() {
-        return teams;
+    public List<Positions> getPositions() {
+        return positions;
     }
 
-    public void setTeams(List<Team> teams) {
-        this.teams = teams;
+    public void setPositions(List<Positions> positions) {
+        this.positions = positions;
     }
 
-    public List<Game> getGames() {
-        return games;
+    public Fixture getFixture() {
+        return fixture;
     }
 
-    public void setGames(List<Game> games) {
-        this.games = games;
+    public void setFixture(Fixture fixture) {
+        this.fixture = fixture;
     }
 }

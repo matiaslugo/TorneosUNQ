@@ -37,14 +37,15 @@ public class Game {
 
     private int goalsTeamB;
 
+    private int matchweek; // fecha numero
+
     @OneToMany(
             cascade = CascadeType.ALL
     )
     @JoinColumn(name = "game_id")
-    private List<Statistic> statistics = new ArrayList<Statistic>();
+    private List<StatisticPlayer> statisticPlayers = new ArrayList<StatisticPlayer>();
 
     public Game(){}
-
 
     public Game(Team teamA, Team teamB, DateTime date, LocalTime startTime) {
         this.teamA = teamA;
@@ -53,14 +54,15 @@ public class Game {
         this.startTime = startTime;
     }
 
-    public Game(Team teamA, Team teamB, DateTime date, LocalTime startTime, int goalsTeamA, int goalsTeamB, List<Statistic> statistics) {
+    public Game(Team teamA, Team teamB, DateTime date, LocalTime startTime, int goalsTeamA, int goalsTeamB, int matchweek, List<StatisticPlayer> statisticPlayers) {
         this.teamA = teamA;
         this.teamB = teamB;
         this.date = date;
         this.startTime = startTime;
         this.goalsTeamA = goalsTeamA;
         this.goalsTeamB = goalsTeamB;
-        this.statistics = statistics;
+        this.matchweek = matchweek;
+        this.statisticPlayers = statisticPlayers;
     }
 
     public Long getId() {
@@ -119,11 +121,19 @@ public class Game {
         this.goalsTeamB = goalsTeamB;
     }
 
-    public List<Statistic> getStatistics() {
-        return statistics;
+    public List<StatisticPlayer> getStatisticPlayers() {
+        return statisticPlayers;
     }
 
-    public void setStatistics(List<Statistic> statistics) {
-        this.statistics = statistics;
+    public void setStatisticPlayers(List<StatisticPlayer> statisticPlayers) {
+        this.statisticPlayers = statisticPlayers;
+    }
+
+    public int getMatchweek() {
+        return matchweek;
+    }
+
+    public void setMatchweek(int matchweek) {
+        this.matchweek = matchweek;
     }
 }

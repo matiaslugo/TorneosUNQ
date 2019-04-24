@@ -3,6 +3,8 @@ package application.controller;
 import application.domain.Championship;
 import application.domain.*;
 import application.repository.ChampionshipRepository;
+import application.repository.TeamRepository;
+import org.joda.time.DateTime;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.*;
@@ -16,29 +18,37 @@ import java.util.stream.Collectors;
 
 @Transactional
 @RestController
+@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST})
 public class ChampionshipController {
 
     @Autowired
     private ChampionshipRepository repository;
 
+    @Autowired
+    private TeamRepository repositoryTeam;
+
     @GetMapping("/torneos")
     public Collection<Championship> getAll() {
+        //QUITAR EL COMENTARIO PARA LA PRIMERA VEZ DE LA EJECUCION
+        /*Team qac = repositoryTeam.findById((long) 87).get();
+        Team boca = repositoryTeam.findById((long) 93).get();
 
-        Player p1 = new Player("Victor","Zanardi");
+        StatisticTeam st1 = new StatisticTeam(qac,1,3,1,0,0,3,2,1);
+        StatisticTeam st2 = new StatisticTeam(boca,1,0,0,0,1,2,3,-1);
 
-        List<Player> players = new ArrayList<Player>();
-        players.add(p1);
+        List<StatisticTeam> statisticTeams = new ArrayList<StatisticTeam>();
+        statisticTeams.add(st1);
+        statisticTeams.add(st2);
 
-        Team t1 = new Team("LOS PIBES", players);
+        Positions posit = new Positions(statisticTeams,"Torneo");
 
-        List<Team> teams = new ArrayList<Team>();
+        List<Positions> positions = new ArrayList<Positions>();
 
-        teams.add(t1);
+        positions.add(posit);
 
-        Championship c1 = new Championship("LA GILADA", "TODOS PUTOS", teams);
+        Championship ch = new Championship("TORNEO UNQ","ALTO TORNEO",new DateTime("1977-10-06"),new DateTime("1977-12-06"),positions,new Fixture());
 
-        repository.save(c1);
-
+        repository.save(ch);*/
 
         return (Collection<Championship>) repository.findAll().stream()
                 .collect(Collectors.toList());
@@ -47,6 +57,16 @@ public class ChampionshipController {
     @PostMapping("/crearTorneo")
     public Championship crearTorneo(@Valid @RequestBody Championship torneo) {
         return repository.save(torneo);
+    }
+
+
+    @GetMapping("/tablePositions")
+    public Collection<StatisticTeam> getStatisticTeam() {
+
+
+        return (Collection<StatisticTeam>) repository.findAll().get(0).getPositions().get(0).getStatisticTeams().stream()
+                .collect(Collectors.toList());
+
     }
 
 
