@@ -30,8 +30,8 @@ public class ChampionshipController {
     @GetMapping("/torneos")
     public Collection<Championship> getAll() {
         //QUITAR EL COMENTARIO PARA LA PRIMERA VEZ DE LA EJECUCION
-        /*Team qac = repositoryTeam.findById((long) 87).get();
-        Team boca = repositoryTeam.findById((long) 93).get();
+        Team qac = repositoryTeam.findById((long) 1).get();
+        Team boca = repositoryTeam.findById((long) 7).get();
 
         StatisticTeam st1 = new StatisticTeam(qac,1,3,1,0,0,3,2,1);
         StatisticTeam st2 = new StatisticTeam(boca,1,0,0,0,1,2,3,-1);
@@ -48,7 +48,7 @@ public class ChampionshipController {
 
         Championship ch = new Championship("TORNEO UNQ","ALTO TORNEO",new DateTime("1977-10-06"),new DateTime("1977-12-06"),positions,new Fixture());
 
-        repository.save(ch);*/
+        repository.save(ch);
 
         return (Collection<Championship>) repository.findAll().stream()
                 .collect(Collectors.toList());
@@ -63,11 +63,15 @@ public class ChampionshipController {
     @GetMapping("/tablePositions")
     public Collection<StatisticTeam> getStatisticTeam() {
 
+        try {
+            return (Collection<StatisticTeam>) repository.findAll().get(0).getPositions().get(0).getStatisticTeams().stream()
+                    .collect(Collectors.toList());
 
-        return (Collection<StatisticTeam>) repository.findAll().get(0).getPositions().get(0).getStatisticTeams().stream()
-                .collect(Collectors.toList());
+        }
+        catch(Exception e){
+            return new ArrayList<StatisticTeam>();
+        }
 
     }
-
 
 }
