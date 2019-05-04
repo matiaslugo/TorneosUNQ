@@ -31,7 +31,10 @@ import java.util.stream.Collectors;
 public class TeamController {
 
     //Save the uploaded file to this folder
-    private static String UPLOADED_FOLDER = "/application/excel/"; //"/home/victorqac/Documentos/Programming/TIP/TorneosUNQ-Backend/src/main/java/application/excel/";
+    //private static String UPLOADED_FOLDER = "/application/excel/"; //"/home/victorqac/Documentos/Programming/TIP/TorneosUNQ-Backend/src/main/java/application/excel/";
+
+    private static String UPLOADED_FOLDER = "/home/victorqac/Documentos/Programming/TIP/TorneosUNQ-Backend/src/main/java/application/excel/";
+
 
     @Autowired
     private TeamRepository repository;
@@ -85,9 +88,9 @@ public class TeamController {
         try {
 
             // Get the file and save it somewhere
-            /*byte[] bytes = file.getBytes();
+            byte[] bytes = file.getBytes();
             Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
-            Files.write(path, bytes);*/
+            Files.write(path, bytes);
 
             redirectAttributes.addFlashAttribute("message",
                     "You successfully uploaded '" + file.getOriginalFilename() + "'");
@@ -97,8 +100,8 @@ public class TeamController {
             String fileName = file.getOriginalFilename();
             String[] parts = fileName.split(".xlsx");
 
-//           List<Player> players = excelToBD.setPlayerFromExcel(UPLOADED_FOLDER + file.getOriginalFilename());
-            List<Player> players = excelToBD.setPlayerFromExcel(file.getOriginalFilename());
+           List<Player> players = excelToBD.setPlayerFromExcel(UPLOADED_FOLDER + file.getOriginalFilename());
+//            List<Player> players = excelToBD.setPlayerFromExcel(file.getOriginalFilename());
 
             Team newTeam = new Team();
             newTeam.setName(parts[0]);

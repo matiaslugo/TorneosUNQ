@@ -35,8 +35,8 @@ public class GameController {
     public Collection<Game> getAll() {
 
 
-        Team qac = repositoryTeam.findById((long) 87).get();
-        Team boca = repositoryTeam.findById((long) 93).get();
+        Team qac = repositoryTeam.findById((long) 1).get();
+        Team boca = repositoryTeam.findById((long) 7).get();
 
         StatisticPlayer st1 = new StatisticPlayer(qac.getPlayers().get(1),1,1,0);
         StatisticPlayer st2 = new StatisticPlayer(boca.getPlayers().get(1),1,0,0);

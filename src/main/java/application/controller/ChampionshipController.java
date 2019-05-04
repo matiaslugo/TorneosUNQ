@@ -4,6 +4,7 @@ import application.domain.Championship;
 import application.domain.*;
 import application.repository.ChampionshipRepository;
 import application.repository.TeamRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.joda.time.DateTime;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import javax.validation.Valid;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,8 +32,8 @@ public class ChampionshipController {
     @GetMapping("/torneos")
     public Collection<Championship> getAll() {
         //QUITAR EL COMENTARIO PARA LA PRIMERA VEZ DE LA EJECUCION
-        /*Team qac = repositoryTeam.findById((long) 87).get();
-        Team boca = repositoryTeam.findById((long) 93).get();
+        /*Team qac = repositoryTeam.findById((long) 1).get();
+        Team boca = repositoryTeam.findById((long) 7).get();
 
         StatisticTeam st1 = new StatisticTeam(qac,1,3,1,0,0,3,2,1);
         StatisticTeam st2 = new StatisticTeam(boca,1,0,0,0,1,2,3,-1);
@@ -67,6 +69,25 @@ public class ChampionshipController {
         return (Collection<StatisticTeam>) repository.findAll().get(0).getPositions().get(0).getStatisticTeams().stream()
                 .collect(Collectors.toList());
 
+    }
+
+    @GetMapping("/matches")
+    public Collection<Game> getGames() {
+
+        Fixture currentFixture = repository.findAll().get(0).getFixture();
+
+        Collection<Game> matches = (Collection<Game>) currentFixture.getGame().stream()
+                .collect(Collectors.toList());
+
+        return matches;
+    }
+
+    @GetMapping("/fixture")
+    public int getFixture() {
+
+        Fixture currentFixture = repository.findAll().get(0).getFixture();
+
+        return currentFixture.getCurrentMatchWeek();
     }
 
 
