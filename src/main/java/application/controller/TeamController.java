@@ -4,6 +4,7 @@ import application.domain.Championship;
 import application.domain.ExcelToBD;
 import application.domain.Player;
 import application.domain.Team;
+import application.dto.PlayerDTO;
 import application.repository.ChampionshipRepository;
 import application.repository.TeamRepository;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -116,6 +117,22 @@ public class TeamController {
         }
 
         return "ok";
+    }
+
+    @PostMapping(path ="/playerCreate/{id}")
+    public void playerCreate(@PathVariable String id, @RequestBody PlayerDTO playerDTO) {
+
+        Optional<Team> teamById = repository.findById(Long.parseLong(id));
+        Player playerNew = new Player();
+
+        playerNew.setName(playerDTO.getName());
+        playerNew.setLastName(playerDTO.getLastName());
+        playerNew.setDni(playerDTO.getDni());
+        playerNew.setBirthdate(new DateTime(playerDTO.getBirthdate()));
+
+        teamById.get().addPlayer(playerNew);
+
+        repository.save(teamById.get());
     }
 
 

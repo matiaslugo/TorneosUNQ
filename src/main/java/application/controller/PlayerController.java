@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @Transactional
 @RestController
-@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST})
+@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST,RequestMethod.DELETE})
 public class PlayerController {
 
     @Autowired
@@ -85,6 +85,11 @@ public class PlayerController {
         //System.out.println("player.getBirthdate()" + player.getBirthdate());
         playerById.get().setBirthdate(new DateTime(player.getBirthdate()));
         repository.save(playerById.get());
+    }
+
+    @RequestMapping(method=RequestMethod.DELETE, path="/deletePlayer/{id}")
+    public void deletePlayer(@PathVariable String id) {
+        repository.deleteById(Long.parseLong(id));
     }
 
 }
