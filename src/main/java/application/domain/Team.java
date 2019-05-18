@@ -49,4 +49,8 @@ public class Team {
     public void setPlayers(List<Player> players) {
         this.players = players;
     }
+
+    public void addPlayer(Player player){
+        this.getPlayers().add(player);
+    }
 }
