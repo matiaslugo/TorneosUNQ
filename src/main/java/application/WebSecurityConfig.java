@@ -12,16 +12,18 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
 @EnableWebSecurity(debug = true)
+
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Override
+ @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        http.csrf()
+                .disable()
                 .authorizeRequests()
                 .antMatchers("/", "/home").permitAll()
                 .antMatchers("/uploadTeam").authenticated()
                 .antMatchers("/uploadPhoto/{id}").authenticated()
                 .antMatchers("/playerUpdate/{id}").authenticated()
-                .antMatchers("/crearTorneo").authenticated()
+                .antMatchers("/championshipCreate").permitAll()
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()
@@ -31,6 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .permitAll();
     }
+
 
     @Bean
     @Override

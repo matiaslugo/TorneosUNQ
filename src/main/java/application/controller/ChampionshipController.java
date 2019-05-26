@@ -2,6 +2,7 @@ package application.controller;
 
 import application.domain.Championship;
 import application.domain.*;
+import application.dto.ChampionshipDTO;
 import application.repository.ChampionshipRepository;
 import application.repository.TeamRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,7 +30,7 @@ public class ChampionshipController {
     @Autowired
     private TeamRepository repositoryTeam;
 
-    @GetMapping("/torneos")
+    @GetMapping("/championships")
     public Collection<Championship> getAll() {
         //QUITAR EL COMENTARIO PARA LA PRIMERA VEZ DE LA EJECUCION
         Team qac = repositoryTeam.findById((long) 1).get();
@@ -59,11 +60,21 @@ public class ChampionshipController {
                 .collect(Collectors.toList());
     }
 
-    @PostMapping("/crearTorneo")
-    public Championship crearTorneo(@Valid @RequestBody Championship torneo) {
-        return repository.save(torneo);
-    }
+    //@PostMapping(path="/championshipCreate")
+    @RequestMapping(value="/championshipCreate",method= {RequestMethod.GET,RequestMethod.POST})
+    public void championshipCreate(@RequestBody ChampionshipDTO championship) {
 
+        Championship newChampionship = new Championship();
+
+        newChampionship.setName(championship.getName());
+        newChampionship.setDescription(championship.getDescription());
+        newChampionship.setFixture(new Fixture());
+        newChampionship.setStartDate(new DateTime(championship.getStartDate()));
+        newChampionship.setFinishDate(new DateTime(championship.getFinishDate()));
+        newChampionship.setPositions(new ArrayList<Positions>());
+
+         repository.save(newChampionship);
+    }
 
     @GetMapping("/tablePositions")
     public Collection<StatisticTeam> getStatisticTeam() {
