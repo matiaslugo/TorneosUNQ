@@ -41,7 +41,7 @@ public class TeamController {
     private TeamRepository repository;
 
 
-    @GetMapping("/TeamBy/{id}")
+    @GetMapping("/teamBy/{id}")
     public  Collection<Player> TeamBy(@PathVariable String id) {
 
         return (repository.findById(Long.parseLong(id)).get().getPlayers()).stream().collect(Collectors.toList());

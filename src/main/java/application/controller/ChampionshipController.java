@@ -32,7 +32,7 @@ public class ChampionshipController {
     @GetMapping("/torneos")
     public Collection<Championship> getAll() {
         //QUITAR EL COMENTARIO PARA LA PRIMERA VEZ DE LA EJECUCION
-        Team qac = repositoryTeam.findById((long) 1).get();
+        //Team qac = repositoryTeam.findById((long) 1).get();
 
         /*Team qac = repositoryTeam.findById((long) 1).get();
 
