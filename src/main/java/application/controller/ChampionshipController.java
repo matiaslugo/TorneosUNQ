@@ -17,7 +17,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
-
+import java.util.Optional;
 
 @Transactional
 @RestController
@@ -74,6 +74,35 @@ public class ChampionshipController {
         newChampionship.setPositions(new ArrayList<Positions>());
 
          repository.save(newChampionship);
+    }
+
+     @GetMapping("/championshipById/{id}")
+    public ChampionshipDTO championshipById(@PathVariable String id) {
+        Optional<Championship> championship = repository.findById(Long.parseLong(id));
+        ChampionshipDTO championshipDTO = new ChampionshipDTO();
+        championshipDTO.setName(championship.get().getName());
+        championshipDTO.setDescription(championship.get().getDescription());
+        String[] startDate = championship.get().getStartDate().toString().split("T");
+        championshipDTO.setStartDate(startDate[0]);
+        String[] finishDate = championship.get().getFinishDate().toString().split("T");
+        championshipDTO.setFinishDate(finishDate[0]);
+        return championshipDTO;
+    }
+
+    @PostMapping(path ="/championshipUpdate/{id}")
+    public void championshipUpdate(@PathVariable String id, @RequestBody ChampionshipDTO championship) {
+
+        Optional<Championship> championshipById = repository.findById(Long.parseLong(id));
+        championshipById.get().setName(championship.getName());
+        championshipById.get().setDescription(championship.getDescription());
+        championshipById.get().setStartDate(new DateTime(championship.getStartDate()));
+        championshipById.get().setFinishDate(new DateTime(championship.getFinishDate()));
+        repository.save(championshipById.get());
+    }
+
+    @RequestMapping(method=RequestMethod.DELETE, path="/deleteChampionship/{id}")
+    public void deleteChampionship(@PathVariable String id) {
+        repository.deleteById(Long.parseLong(id));
     }
 
     @GetMapping("/tablePositions")
