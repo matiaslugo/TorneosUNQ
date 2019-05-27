@@ -58,19 +58,31 @@ public class UserController {
         return "redirect:/";
     }
 
-    @GetMapping("/login")
-    public String login(Model model, String error, String logout) {
-        if (error != null)
+    @PostMapping("/login")
+    //public String login(Model model, String error, String logout) {
+    public String login(@RequestBody UserDTO userForm){
+        /*if (error != null)
             model.addAttribute("error", "Your username and password is invalid.");
 
         if (logout != null)
-            model.addAttribute("message", "You have been logged out successfully.");
+            model.addAttribute("message", "You have been logged out successfully.");*/
+        System.out.println("login");
+        System.out.println("userForm.getUsername()");
+        System.out.println(userForm.getUsername());
+
+        securityService.autoLogin(userForm.getUsername(), userForm.getPassword());
 
         return "login";
     }
 
-    @GetMapping({"/", "/welcome"})
+    /*@GetMapping({"/", "/welcome"})
     public String welcome(Model model) {
         return "welcome";
+    }*/
+
+    @PostMapping({"/logout"})
+    public String logout() {
+        return "logout";
     }
+
 }
