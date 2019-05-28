@@ -7,6 +7,8 @@ import application.service.SecurityService;
 import application.service.UserService;
 import application.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -75,14 +77,21 @@ public class UserController {
         return "login";
     }
 
-    /*@GetMapping({"/", "/welcome"})
-    public String welcome(Model model) {
-        return "welcome";
-    }*/
-
-    @PostMapping({"/logout"})
+    @PostMapping("/logout")
     public String logout() {
         return "logout";
+    }
+
+    @GetMapping("/profile")
+    public String myProfile(Model model){
+        try{
+            User user = userService.findByUsername(((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
+            model.addAttribute("user",user);
+            return "account/user";
+            //return user.getUsername();
+        } catch (Exception e) {
+            return"/error";
+        }
     }
 
 }
