@@ -68,7 +68,6 @@ public class ExcelToBD {
                 Integer dni = 0;
                 DateTime birthdate = null;
                 boolean isStudent = true;
-                String photo = "";
 
                 for (Cell cell : row) {
                     int numberColumn = cell.getColumnIndex();
@@ -90,9 +89,6 @@ public class ExcelToBD {
                             break;
                         case 4:
                             isStudent = Boolean.parseBoolean(cellValue);
-                            break;
-                        case 5:
-                            photo = cellValue;
                             break;
                         default:
                             break;

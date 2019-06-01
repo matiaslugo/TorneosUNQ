@@ -1,11 +1,9 @@
 package application.controller;
 
-import application.domain.Championship;
 import application.domain.ExcelToBD;
 import application.domain.Player;
 import application.domain.Team;
 import application.dto.PlayerDTO;
-import application.repository.ChampionshipRepository;
 import application.repository.TeamRepository;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.joda.time.DateTime;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.validation.Valid;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -49,29 +46,29 @@ public class TeamController {
 
     @GetMapping("/teams")
     public Collection<Team> getAll() {
-        /*Player player1 = new Player("Sergio","Aguero",36158933,new DateTime("1980-12-04"),true);
+        // Player player1 = new Player("Sergio","Aguero",36158933,new DateTime("1980-12-04"),true);
 
-        Player player2 = new Player("Lionel","Messi",32345677,new DateTime("1977-10-06"),true);
+        // Player player2 = new Player("Lionel","Messi",32345677,new DateTime("1977-10-06"),true);
 
-        Player player3 = new Player("Diego","Maradona",13245568,new DateTime("1970-07-30"),true);
+        // Player player3 = new Player("Diego","Maradona",13245568,new DateTime("1970-07-30"),true);
 
-        Player player4 = new Player("Victor","Zanardi",35234567,new DateTime("1990-04-09"),true);
+        // Player player4 = new Player("Victor","Zanardi",35234567,new DateTime("1990-04-09"),true);
 
-        Player player5 = new Player("Fernando","Rodriguez",35456783,new DateTime("1988-09-05"),true);
+        // Player player5 = new Player("Fernando","Rodriguez",35456783,new DateTime("1988-09-05"),true);
 
-        List<Player> players = new ArrayList<Player>();
+        // List<Player> players = new ArrayList<Player>();
 
-        players.add(player1);
-        players.add(player2);
-        players.add(player3);
-        players.add(player4);
-        players.add(player5);
+        // players.add(player1);
+        // players.add(player2);
+        // players.add(player3);
+        // players.add(player4);
+        // players.add(player5);
 
-        Team equipoNew = new Team();
-        equipoNew.setName("Los Galacticos");
-        equipoNew.setPlayers(players);
+        // Team equipoNew = new Team();
+        // equipoNew.setName("Los Galacticos");
+        // equipoNew.setPlayers(players);
 
-        repository.save(equipoNew);*/
+        // repository.save(equipoNew);
 
         return (Collection<Team>) repository.findAll().stream()
                 .collect(Collectors.toList());
@@ -93,7 +90,6 @@ public class TeamController {
             //Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
             Path path = Paths.get(file.getOriginalFilename());
             Files.write(path, bytes);
-
             redirectAttributes.addFlashAttribute("message",
                     "You successfully uploaded '" + file.getOriginalFilename() + "'");
 

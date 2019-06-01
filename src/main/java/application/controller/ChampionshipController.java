@@ -5,16 +5,12 @@ import application.domain.*;
 import application.dto.ChampionshipDTO;
 import application.repository.ChampionshipRepository;
 import application.repository.TeamRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.joda.time.DateTime;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.*;
-import javax.validation.Valid;
-
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.Optional;
@@ -47,21 +43,26 @@ public class ChampionshipController {
         statisticTeams.add(st2);
 
         Positions posit = new Positions(statisticTeams,"Torneo");
-
+*/
         List<Positions> positions = new ArrayList<Positions>();
 
-        positions.add(posit);
+        //positions.add(posit);
 
-        Championship ch = new Championship("TORNEO UNQ","ALTO TORNEO",new DateTime("1977-10-06"),new DateTime("1977-12-06"),positions,new Fixture());
+        //Championship ch = new Championship("TORNEO UNQ","ALTO TORNEO",new DateTime("1977-10-06"),new DateTime("1977-12-06"),positions,new Fixture());
 
-        repository.save(ch);*/
+        //repository.save(ch);
+        Collection<Championship> championships;
+        championships = (Collection<Championship>) repository.findAll().stream()
+        .collect(Collectors.toList());
+        if (championships == null){
+            championships = new ArrayList<Championship>();
+        }
 
-        return (Collection<Championship>) repository.findAll().stream()
-                .collect(Collectors.toList());
+        return championships;
     }
 
-    //@PostMapping(path="/championshipCreate")
-    @RequestMapping(value="/championshipCreate",method= {RequestMethod.GET,RequestMethod.POST})
+    @PostMapping(path="/championshipCreate/")
+    // @RequestMapping(value="/championshipCreate",method= {RequestMethod.GET,RequestMethod.POST})
     public void championshipCreate(@RequestBody ChampionshipDTO championship) {
 
         Championship newChampionship = new Championship();

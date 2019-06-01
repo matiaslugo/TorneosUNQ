@@ -5,10 +5,6 @@ import org.joda.time.DateTime;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
-import java.awt.*;
-import java.sql.Blob;
-
-import static java.sql.JDBCType.BLOB;
 
 @Entity
 @Transactional
@@ -30,7 +26,6 @@ public class Player {
     private boolean isStudent;
 
     @Lob
-    //@Column(length=100000,columnDefinition="BLOB")
     private byte[] photo;
 
     public Player (){}

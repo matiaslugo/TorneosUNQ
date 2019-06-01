@@ -1,7 +1,5 @@
 package application.dto;
 
-import javax.persistence.Transient;
-
 public class UserDTO {
 
     private String username;

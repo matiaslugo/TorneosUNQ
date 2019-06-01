@@ -1,10 +1,6 @@
 package application.controller;
 
-import application.domain.StatisticPlayer;
-import application.domain.Team;
 import application.repository.GameRepository;
-import application.repository.TeamRepository;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,11 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import application.domain.Game;
-import java.time.LocalTime;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -26,10 +19,6 @@ public class GameController {
 
     @Autowired
     private GameRepository repository;
-
-    @Autowired
-    private TeamRepository repositoryTeam;
-
 
     @GetMapping("/games")
     public Collection<Game> getAll() {

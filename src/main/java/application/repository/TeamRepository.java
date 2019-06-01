@@ -1,6 +1,5 @@
 package application.repository;
 
-import application.domain.Championship;
 import application.domain.Team;
 import org.springframework.data.jpa.repository.JpaRepository;
 
