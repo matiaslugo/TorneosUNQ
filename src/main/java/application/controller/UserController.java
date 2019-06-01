@@ -53,24 +53,13 @@ public class UserController {
 
         userService.save(newUser);
 
-        //User userSet = userService.findByUsername(userForm.getUsername());
-
         securityService.autoLogin(userForm.getUsername(), userForm.getPassword());
 
         return "redirect:/";
     }
 
     @PostMapping("/login")
-    //public String login(Model model, String error, String logout) {
     public String login(@RequestBody UserDTO userForm){
-        /*if (error != null)
-            model.addAttribute("error", "Your username and password is invalid.");
-
-        if (logout != null)
-            model.addAttribute("message", "You have been logged out successfully.");*/
-        System.out.println("login");
-        System.out.println("userForm.getUsername()");
-        System.out.println(userForm.getUsername());
 
         securityService.autoLogin(userForm.getUsername(), userForm.getPassword());
 
@@ -88,7 +77,6 @@ public class UserController {
             User user = userService.findByUsername(((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
             model.addAttribute("user",user);
             return "account/user";
-            //return user.getUsername();
         } catch (Exception e) {
             return"/error";
         }
