@@ -6,6 +6,10 @@ import application.service.SecurityService;
 import application.service.UserService;
 import application.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -49,38 +53,33 @@ public class UserController {
 
         userService.save(newUser);
 
-        //User userSet = userService.findByUsername(userForm.getUsername());
-
         securityService.autoLogin(userForm.getUsername(), userForm.getPassword());
 
         return "redirect:/";
     }
 
     @PostMapping("/login")
-    //public String login(Model model, String error, String logout) {
     public String login(@RequestBody UserDTO userForm){
-        /*if (error != null)
-            model.addAttribute("error", "Your username and password is invalid.");
-
-        if (logout != null)
-            model.addAttribute("message", "You have been logged out successfully.");*/
-        System.out.println("login");
-        System.out.println("userForm.getUsername()");
-        System.out.println(userForm.getUsername());
 
         securityService.autoLogin(userForm.getUsername(), userForm.getPassword());
 
         return "login";
     }
 
-    /*@GetMapping({"/", "/welcome"})
-    public String welcome(Model model) {
-        return "welcome";
-    }*/
-
-    @PostMapping({"/logout"})
+    @PostMapping("/logout")
     public String logout() {
         return "logout";
+    }
+
+    @GetMapping("/profile")
+    public String myProfile(Model model){
+        try{
+            User user = userService.findByUsername(((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
+            model.addAttribute("user",user);
+            return "account/user";
+        } catch (Exception e) {
+            return"/error";
+        }
     }
 
 }
