@@ -120,23 +120,23 @@ public class ChampionshipController {
 
     }
 
-    @GetMapping("/matches")
+    /* @GetMapping("/matches")
     public Collection<Game> getGames() {
 
         Fixture currentFixture = repository.findAll().get(0).getFixture();
-
+ 
         Collection<Game> matches = (Collection<Game>) currentFixture.getGame().stream()
                 .collect(Collectors.toList());
 
         return matches;
-    }
+    } */
 
-    @GetMapping("/fixture")
+    /* @GetMapping("/fixture")
     public int getFixture() {
 
         Fixture currentFixture = repository.findAll().get(0).getFixture();
 
         return currentFixture.getCurrentMatchWeek();
-    }
+    } */
 
 }

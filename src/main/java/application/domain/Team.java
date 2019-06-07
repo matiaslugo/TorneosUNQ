@@ -1,6 +1,12 @@
 package application.domain;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,9 +19,7 @@ public class Team {
 
     private String name;
 
-    @OneToMany(
-            cascade = CascadeType.ALL
-    )
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
     private List<Player> players = new ArrayList<Player>();
 
@@ -42,15 +46,15 @@ public class Team {
         this.name = name;
     }
 
-    public List<Player> getPlayers() {
-        return players;
-    }
+    // public List<Player> getPlayers() {
+    //     return players;
+    // }
 
     public void setPlayers(List<Player> players) {
         this.players = players;
     }
 
     public void addPlayer(Player player){
-        this.getPlayers().add(player);
+        this.players.add(player);
     }
 }
