@@ -38,11 +38,11 @@ public class TeamController {
     private TeamRepository repository;
 
 
-    // @GetMapping("/teamBy/{id}")
-    // public  Collection<Player> TeamBy(@PathVariable String id) {
+    @GetMapping("/teamBy/{id}")
+    public  Collection<Player> TeamBy(@PathVariable String id) {
 
-    //     return (repository.findById(Long.parseLong(id)).get().getPlayers()).stream().collect(Collectors.toList());
-    // }
+         return (repository.findById(Long.parseLong(id)).get().playersAll()).stream().collect(Collectors.toList());
+    }
 
     @GetMapping("/teams")
     public Collection<Team> getAll() {
