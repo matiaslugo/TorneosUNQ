@@ -131,6 +131,7 @@ public class ChampionshipController {
         return matches;
     }
 
+
     @GetMapping("/fixture")
     public int getFixture() {
 
