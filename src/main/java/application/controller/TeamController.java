@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 public class TeamController {
 
     //Save the uploaded file to this folder
-    //private static String UPLOADED_FOLDER = "/application/excel/"; //"/home/victorqac/Documentos/Programming/TIP/TorneosUNQ-Backend/src/main/java/application/excel/";
+    private static String UPLOADED_FOLDER = "/application/excel/"; //"/home/victorqac/Documentos/Programming/TIP/TorneosUNQ-Backend/src/main/java/application/excel/";
 
     //private static String UPLOADED_FOLDER = "/home/victorqac/Documentos/Programming/TIP/TorneosUNQ-Backend/src/main/java/application/excel/";
 
@@ -46,29 +46,6 @@ public class TeamController {
 
     @GetMapping("/teams")
     public Collection<Team> getAll() {
-        /* Player player1 = new Player("Sergio","Aguero",36158933,new DateTime("1980-12-04"),true);
-
-        Player player2 = new Player("Lionel","Messi",32345677,new DateTime("1977-10-06"),true);
-
-        Player player3 = new Player("Diego","Maradona",13245568,new DateTime("1970-07-30"),true);
-
-        Player player4 = new Player("Victor","Zanardi",35234567,new DateTime("1990-04-09"),true);
-
-        Player player5 = new Player("Fernando","Rodriguez",35456783,new DateTime("1988-09-05"),true);
-
-        List<Player> players = new ArrayList<Player>();
-
-        players.add(player1);
-        players.add(player2);
-        players.add(player3);
-        players.add(player4);
-        players.add(player5);
-
-        Team equipoNew = new Team();
-        equipoNew.setName("Los Galacticos");
-        equipoNew.setPlayers(players);
-
-        repository.save(equipoNew); */
 
         return (Collection<Team>) repository.findAll();
     }
@@ -86,8 +63,8 @@ public class TeamController {
 
             // Get the file and save it somewhere
             byte[] bytes = file.getBytes();
-            //Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
-            Path path = Paths.get(file.getOriginalFilename());
+            Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
+            // Path path = Paths.get(file.getOriginalFilename());
             Files.write(path, bytes);
             redirectAttributes.addFlashAttribute("message",
                     "You successfully uploaded '" + file.getOriginalFilename() + "'");
@@ -97,8 +74,8 @@ public class TeamController {
             String fileName = file.getOriginalFilename();
             String[] parts = fileName.split(".xlsx");
 
-           //List<Player> players = excelToBD.setPlayerFromExcel(UPLOADED_FOLDER + file.getOriginalFilename());
-            List<Player> players = excelToBD.setPlayerFromExcel(file.getOriginalFilename());
+            List<Player> players = excelToBD.setPlayerFromExcel(UPLOADED_FOLDER + file.getOriginalFilename());
+            // List<Player> players = excelToBD.setPlayerFromExcel(file.getOriginalFilename());
 
             Team newTeam = new Team();
             newTeam.setName(parts[0]);
@@ -131,6 +108,9 @@ public class TeamController {
         repository.save(teamById.get());
     }
 
-
-
+    @GetMapping("/teamsNotAssigned")
+    public Collection<Team> teamsNotAssigned() {
+        
+        return (Collection<Team>)  repository.findAllTeamsNotAssigned();
+    }
 }

@@ -2,6 +2,8 @@ package application.dto;
 
 public class ChampionshipDTO {
 
+    private String id;
+
     private String name;
 
     private String description;
@@ -32,6 +34,10 @@ public class ChampionshipDTO {
         return startDate;
     }
 
+    public String getId()
+    {
+        return id;
+    }
     public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
@@ -42,5 +48,10 @@ public class ChampionshipDTO {
 
     public void setFinishDate(String finishDate) {
         this.finishDate = finishDate;
+    }
+
+    public void setId(String id)
+    {
+        this.id = id;
     }
 }

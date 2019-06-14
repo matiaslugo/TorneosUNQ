@@ -9,6 +9,8 @@ import org.joda.time.DateTime;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.*;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -27,7 +29,7 @@ public class ChampionshipController {
     private TeamRepository repositoryTeam;
 
     @GetMapping("/championships")
-    public Collection<Championship> getAll() {
+    public Collection<ChampionshipDTO> getAll() {
         //QUITAR EL COMENTARIO PARA LA PRIMERA VEZ DE LA EJECUCION
         //Team qac = repositoryTeam.findById((long) 1).get();
 
@@ -52,13 +54,28 @@ public class ChampionshipController {
 
         //repository.save(ch);
         Collection<Championship> championships;
+        ArrayList<ChampionshipDTO> championshipsReturn = new ArrayList<ChampionshipDTO>();
         championships = (Collection<Championship>) repository.findAll().stream()
         .collect(Collectors.toList());
-        if (championships == null){
-            championships = new ArrayList<Championship>();
-        }
+        
+            for (Championship ch : championships) {
+              ChampionshipDTO championship = mapChampionship(ch);
+              championshipsReturn.add(championship);
+            }
 
-        return championships;
+        return championshipsReturn;
+    }
+
+    public ChampionshipDTO mapChampionship(Championship championshipToMap)
+    {
+        ChampionshipDTO newChampionship = new ChampionshipDTO();
+        newChampionship.setId((championshipToMap.getId().toString()));
+        newChampionship.setName(championshipToMap.getName());
+        newChampionship.setDescription(championshipToMap.getDescription());
+        newChampionship.setStartDate(championshipToMap.getStartDate().toString().split("T")[0]);
+        newChampionship.setFinishDate(championshipToMap.getFinishDate().toString().split("T")[0]);
+
+        return newChampionship;
     }
 
     @PostMapping(path="/championshipCreate/")
@@ -118,6 +135,23 @@ public class ChampionshipController {
             return new ArrayList<StatisticTeam>();
         }
 
+    }
+
+    @PostMapping(path ="/addTeams/")
+    public void addTeams(@RequestBody ArrayList<String> teamsId) {
+        ArrayList<Team> addTeamsChampionship = new ArrayList<Team>();
+        Championship championship = repository.findLastChampionship();
+
+        for (String teamId : teamsId) {
+           Team team = repositoryTeam.findById(Long.parseLong(teamId)).get();
+           if (championship.allTeams().contains(team))
+           {
+            championship.allTeams().remove(team);
+           }
+            championship.allTeams().add(team);
+        }
+
+        repository.save(championship);
     }
 
     /* @GetMapping("/matches")

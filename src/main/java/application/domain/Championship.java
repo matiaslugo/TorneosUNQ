@@ -31,6 +31,10 @@ public class Championship {
     @JoinColumn(name = "championship_id")
     private List<Positions> positions = new ArrayList<Positions>();
 
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "championship_id")
+    private List<Team> teams = new ArrayList<Team>();
+
     @OneToOne(
             cascade = CascadeType.ALL,
             orphanRemoval = true
@@ -47,7 +51,6 @@ public class Championship {
         this.positions = positions;
         this.fixture = fixture;
     }
-
 
     public Long getId() {
         return id;
@@ -92,7 +95,7 @@ public class Championship {
     public List<Positions> getPositions() {
         return positions;
     }
-
+    
     public void setPositions(List<Positions> positions) {
         this.positions = positions;
     }
@@ -103,5 +106,13 @@ public class Championship {
 
     public void setFixture(Fixture fixture) {
         this.fixture = fixture;
+    }
+
+    public List<Team> allTeams() {
+        return this.teams;
+    }
+
+    public void setTeams(List<Team> teams) {
+        this.teams = teams;
     }
 }
