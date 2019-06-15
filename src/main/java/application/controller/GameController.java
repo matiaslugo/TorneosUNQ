@@ -2,18 +2,23 @@ package application.controller;
 
 import application.domain.StatisticPlayer;
 import application.domain.Team;
+import application.dto.GameDTO;
 import application.repository.GameRepository;
 import application.repository.TeamRepository;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import application.domain.Game;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -50,8 +55,33 @@ public class GameController {
     }
 
     @GetMapping("/matchBy/{id}")
-    public  Game TeamBy(@PathVariable String id) {
+    public GameDTO TeamBy(@PathVariable String id) {
 
-        return repository.findById(Long.parseLong(id)).get();
+        Game game = repository.findById(Long.parseLong(id)).get();
+        GameDTO gameDTO = new GameDTO();
+        gameDTO.setTeamAId(game.getTeamA().getId());
+        gameDTO.setTeamAName(game.getTeamA().getName());
+        gameDTO.setTeamBId(game.getTeamB().getId());
+        gameDTO.setTeamBName(game.getTeamB().getName());
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("MM/dd/yyyy");
+        String strDate = formatter.print(game.getDate());
+        gameDTO.setDate(strDate);
+        gameDTO.setStartTime(game.getStartTime().toString());
+        gameDTO.setGoalsTeamA(game.getGoalsTeamA());
+        gameDTO.setGoalsTeamB(game.getGoalsTeamB());
+        gameDTO.setMatchweek(game.getMatchweek());
+
+        return gameDTO;
+    }
+
+    @PostMapping(path ="/matchUpdate/{id}")
+    public void matchUpdate(@PathVariable String id, @RequestBody GameDTO match) {
+
+        Optional<Game> gameById = repository.findById(Long.parseLong(id));
+
+        gameById.get().setGoalsTeamA(match.getGoalsTeamA());
+        gameById.get().setGoalsTeamB(match.getGoalsTeamB());
+
+        repository.save(gameById.get());
     }
 }
