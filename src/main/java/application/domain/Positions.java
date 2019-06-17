@@ -50,4 +50,8 @@ public class Positions {
     public void setStatisticTeams(List<StatisticTeam> statisticTeams) {
         this.statisticTeams = statisticTeams;
     }
+
+    public void addStatisticTeams( StatisticTeam statisticTeam){
+        this.statisticTeams.add(statisticTeam);
+    }
 }

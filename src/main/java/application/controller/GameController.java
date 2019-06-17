@@ -1,10 +1,9 @@
 package application.controller;
 
-import application.domain.Player;
-import application.domain.StatisticPlayer;
-import application.domain.Team;
+import application.domain.*;
 import application.dto.GameDTO;
 import application.dto.StatisticPlayerDTO;
+import application.repository.ChampionshipRepository;
 import application.repository.GameRepository;
 import application.repository.PlayerRepository;
 import application.repository.TeamRepository;
@@ -14,7 +13,6 @@ import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import application.domain.Game;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
@@ -37,6 +35,9 @@ public class GameController {
 
     @Autowired
     private PlayerRepository repositoryPlayer;
+
+    @Autowired
+    private ChampionshipRepository repositoryChampionship;
 
     @GetMapping("/games")
     public Collection<Game> getAll() {
@@ -85,21 +86,22 @@ public class GameController {
 
         Game gameById = repository.findById(Long.parseLong(id)).get();
 
-        List<StatisticPlayerDTO> statistics = match.getStatisticPlayer();
+        List<StatisticPlayerDTO> statisticPlayers = match.getStatisticPlayer();
 
-        for (int i = 0; i < statistics.size(); ++i) {
 
-            StatisticPlayerDTO stCurrent = statistics.get(i);
-            if(stCurrent.getGoals() != 0 || stCurrent.getYellowCard() != 0 || stCurrent.getRedCard() != 0){
+        for (int i = 0; i < statisticPlayers.size(); ++i) {
+
+            StatisticPlayerDTO stpCurrent = statisticPlayers.get(i);
+            if(stpCurrent.getGoals() != 0 || stpCurrent.getYellowCard() != 0 || stpCurrent.getRedCard() != 0){
 
                 StatisticPlayer newStatisticPlayer = new StatisticPlayer();
 
-                Player player = repositoryPlayer.findById((long) stCurrent.getId()).get();
+                Player player = repositoryPlayer.findById((long) stpCurrent.getId()).get();
 
                 newStatisticPlayer.setPlayer(player);
-                newStatisticPlayer.setGoals(stCurrent.getGoals());
-                newStatisticPlayer.setYellowCard(stCurrent.getYellowCard());
-                newStatisticPlayer.setRedCard(stCurrent.getRedCard());
+                newStatisticPlayer.setGoals(stpCurrent.getGoals());
+                newStatisticPlayer.setYellowCard(stpCurrent.getYellowCard());
+                newStatisticPlayer.setRedCard(stpCurrent.getRedCard());
 
                 gameById.addStatisticPlayer(newStatisticPlayer);
             }
@@ -107,7 +109,58 @@ public class GameController {
 
         gameById.setGoalsTeamA(match.getGoalsTeamA());
         gameById.setGoalsTeamB(match.getGoalsTeamB());
+        gameById.setPlayed(true);
 
         repository.save(gameById);
+
+        Championship championship = repositoryChampionship.findLastChampionship();
+
+        Positions positions = championship.getPositions().get(0);
+
+        List<StatisticTeam> statisticTeams = positions.getStatisticTeams();
+
+        boolean localizedTeamA = true;
+        boolean localizedTeamB = true;
+
+        for (int j = 0; j < statisticTeams.size(); ++j) {
+
+            StatisticTeam sttCurrent = statisticTeams.get(j);
+
+            Team teamCurrent = sttCurrent.getTeam();
+
+            if(teamCurrent.getId() == match.getTeamAId()){
+
+                sttCurrent.updateStatisticA(match);
+
+                localizedTeamA = false;
+
+            } else {
+                if(teamCurrent.getId() == match.getTeamBId()){
+                    sttCurrent.updateStatisticB(match);
+                    localizedTeamB = false;
+                }
+            }
+        }
+
+        if(localizedTeamA == true){
+            Team teamA = repositoryTeam.findById(match.getTeamAId()).get();
+            StatisticTeam newStt = new StatisticTeam(teamA,0,0,0,0,0,0,0,0);
+
+            newStt.updateStatisticA(match);
+
+            positions.addStatisticTeams(newStt);
+        }
+
+        if(localizedTeamB == true){
+
+            Team teamB = repositoryTeam.findById(match.getTeamBId()).get();
+            StatisticTeam newStt = new StatisticTeam(teamB,0,0,0,0,0,0,0,0);
+
+            newStt.updateStatisticB(match);
+
+            positions.addStatisticTeams(newStt);
+        }
+
+        repositoryChampionship.save(championship);
     }
 }

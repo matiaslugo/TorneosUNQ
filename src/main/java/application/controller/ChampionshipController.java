@@ -110,7 +110,7 @@ public class ChampionshipController {
     public Collection<StatisticTeam> getStatisticTeam() {
 
         try {
-            return (Collection<StatisticTeam>) repository.findAll().get(0).getPositions().get(0).getStatisticTeams().stream()
+            return (Collection<StatisticTeam>) repository.findLastChampionship().getPositions().get(0).getStatisticTeams().stream()
                     .collect(Collectors.toList());
 
         }
@@ -123,7 +123,7 @@ public class ChampionshipController {
     @GetMapping("/matches")
     public Collection<Game> getGames() {
 
-        Fixture currentFixture = repository.findAll().get(0).getFixture();
+        Fixture currentFixture = repository.findLastChampionship().getFixture();
  
         Collection<Game> matches = (Collection<Game>) currentFixture.getGame().stream()
                 .collect(Collectors.toList());
@@ -135,7 +135,7 @@ public class ChampionshipController {
     @GetMapping("/fixture")
     public int getFixture() {
 
-        Fixture currentFixture = repository.findAll().get(0).getFixture();
+        Fixture currentFixture = repository.findLastChampionship().getFixture();
 
         return currentFixture.getCurrentMatchWeek();
     }

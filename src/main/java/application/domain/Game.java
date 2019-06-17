@@ -40,10 +40,13 @@ public class Game {
     private int matchweek; // fecha numero
 
     @OneToMany(
+            fetch = FetchType.LAZY,
             cascade = CascadeType.ALL
     )
     @JoinColumn(name = "game_id")
     private List<StatisticPlayer> statisticPlayers = new ArrayList<StatisticPlayer>();
+
+    private boolean played; //partido jugado?
 
     public Game(){}
 
@@ -121,9 +124,9 @@ public class Game {
         this.goalsTeamB = goalsTeamB;
     }
 
-    public List<StatisticPlayer> getStatisticPlayers() {
+    /*public List<StatisticPlayer> getStatisticPlayers() {
         return statisticPlayers;
-    }
+    }*/
 
     public void setStatisticPlayers(List<StatisticPlayer> statisticPlayers) {
         this.statisticPlayers = statisticPlayers;
@@ -140,4 +143,13 @@ public class Game {
     public void addStatisticPlayer(StatisticPlayer statisticPlayer){
         this.statisticPlayers.add(statisticPlayer);
     }
+
+    public boolean isPlayed() {
+        return played;
+    }
+
+    public void setPlayed(boolean played) {
+        this.played = played;
+    }
+
 }
