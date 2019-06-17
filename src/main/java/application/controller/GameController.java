@@ -1,9 +1,12 @@
 package application.controller;
 
+import application.domain.Player;
 import application.domain.StatisticPlayer;
 import application.domain.Team;
 import application.dto.GameDTO;
+import application.dto.StatisticPlayerDTO;
 import application.repository.GameRepository;
+import application.repository.PlayerRepository;
 import application.repository.TeamRepository;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -31,6 +34,9 @@ public class GameController {
 
     @Autowired
     private TeamRepository repositoryTeam;
+
+    @Autowired
+    private PlayerRepository repositoryPlayer;
 
     @GetMapping("/games")
     public Collection<Game> getAll() {
@@ -77,11 +83,31 @@ public class GameController {
     @PostMapping(path ="/matchUpdate/{id}")
     public void matchUpdate(@PathVariable String id, @RequestBody GameDTO match) {
 
-        Optional<Game> gameById = repository.findById(Long.parseLong(id));
+        Game gameById = repository.findById(Long.parseLong(id)).get();
 
-        gameById.get().setGoalsTeamA(match.getGoalsTeamA());
-        gameById.get().setGoalsTeamB(match.getGoalsTeamB());
+        List<StatisticPlayerDTO> statistics = match.getStatisticPlayer();
 
-        repository.save(gameById.get());
+        for (int i = 0; i < statistics.size(); ++i) {
+
+            StatisticPlayerDTO stCurrent = statistics.get(i);
+            if(stCurrent.getGoals() != 0 || stCurrent.getYellowCard() != 0 || stCurrent.getRedCard() != 0){
+
+                StatisticPlayer newStatisticPlayer = new StatisticPlayer();
+
+                Player player = repositoryPlayer.findById((long) stCurrent.getId()).get();
+
+                newStatisticPlayer.setPlayer(player);
+                newStatisticPlayer.setGoals(stCurrent.getGoals());
+                newStatisticPlayer.setYellowCard(stCurrent.getYellowCard());
+                newStatisticPlayer.setRedCard(stCurrent.getRedCard());
+
+                gameById.addStatisticPlayer(newStatisticPlayer);
+            }
+        }
+
+        gameById.setGoalsTeamA(match.getGoalsTeamA());
+        gameById.setGoalsTeamB(match.getGoalsTeamB());
+
+        repository.save(gameById);
     }
 }

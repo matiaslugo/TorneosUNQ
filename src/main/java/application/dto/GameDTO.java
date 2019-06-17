@@ -1,6 +1,10 @@
 package application.dto;
 
 
+import org.json.JSONObject;
+
+import java.util.List;
+
 public class GameDTO {
 
     private Long teamAId;
@@ -17,6 +21,7 @@ public class GameDTO {
 
     private int matchweek;
 
+    private List<StatisticPlayerDTO> statisticPlayer;
 
     public GameDTO(){}
 
@@ -90,5 +95,13 @@ public class GameDTO {
 
     public void setMatchweek(int matchweek) {
         this.matchweek = matchweek;
+    }
+
+    public List<StatisticPlayerDTO> getStatisticPlayer() {
+        return statisticPlayer;
+    }
+
+    public void setStatisticPlayer(List<StatisticPlayerDTO> statisticPlayer) {
+        this.statisticPlayer = statisticPlayer;
     }
 }

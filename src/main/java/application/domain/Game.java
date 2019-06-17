@@ -136,4 +136,8 @@ public class Game {
     public void setMatchweek(int matchweek) {
         this.matchweek = matchweek;
     }
+
+    public void addStatisticPlayer(StatisticPlayer statisticPlayer){
+        this.statisticPlayers.add(statisticPlayer);
+    }
 }
