@@ -142,7 +142,7 @@ public class StatisticTeam {
                 this.setLost(this.getLost() + 1);
             } else {
                 this.setPoints(this.getPoints() + 1);
-                this.setWon(this.getDrawn() + 1);
+                this.setDrawn(this.getDrawn() + 1);
             }
         }
 
@@ -170,7 +170,7 @@ public class StatisticTeam {
                 this.setLost(this.getLost() + 1);
             } else {
                 this.setPoints(this.getPoints() + 1);
-                this.setWon(this.getDrawn() + 1);
+                this.setDrawn(this.getDrawn() + 1);
             }
         }
 
