@@ -2,6 +2,8 @@ package application.domain;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Entity
@@ -53,5 +55,17 @@ public class Positions {
 
     public void addStatisticTeams( StatisticTeam statisticTeam){
         this.statisticTeams.add(statisticTeam);
+    }
+
+    public void ordenar(){
+
+        Collections.sort(this.statisticTeams, new Comparator<StatisticTeam>(){
+            @Override
+            public int compare(StatisticTeam st1, StatisticTeam st2) {
+                Integer st1Point = new Integer(st1.getPoints());
+                Integer st2Point = new Integer(st2.getPoints());
+                return st2Point.compareTo(st1Point);
+            }
+        });
     }
 }

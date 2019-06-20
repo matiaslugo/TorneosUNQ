@@ -110,7 +110,12 @@ public class ChampionshipController {
     public Collection<StatisticTeam> getStatisticTeam() {
 
         try {
-            return (Collection<StatisticTeam>) repository.findLastChampionship().getPositions().get(0).getStatisticTeams().stream()
+
+            Positions positions = repository.findLastChampionship().getPositions().get(0);
+
+            positions.ordenar();
+
+            return (Collection<StatisticTeam>) positions.getStatisticTeams().stream()
                     .collect(Collectors.toList());
 
         }
@@ -125,10 +130,24 @@ public class ChampionshipController {
 
         Fixture currentFixture = repository.findLastChampionship().getFixture();
  
-        Collection<Game> matches = (Collection<Game>) currentFixture.getGame().stream()
+        /*Collection<Game> matches = (Collection<Game>) currentFixture.getGame().stream()
                 .collect(Collectors.toList());
 
-        return matches;
+        return matches;*/
+        // por ahora se deja traer todos los partidos.
+        List<Game> matches = currentFixture.getGame();
+        List<Game> matchesNotPlayed = new ArrayList<Game>();
+
+        for (int i = 0; i < matches.size(); ++i) {
+
+            Game matchCurrent = matches.get(i);
+            if(!matchCurrent.isPlayed()){
+                matchesNotPlayed.add(matchCurrent);
+            }
+
+        }
+
+        return (Collection<Game>) matchesNotPlayed.stream().collect(Collectors.toList());
     }
 
 

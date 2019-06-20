@@ -5,7 +5,7 @@ import application.dto.GameDTO;
 import javax.persistence.*;
 
 @Entity
-public class StatisticTeam {
+public class StatisticTeam{
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
