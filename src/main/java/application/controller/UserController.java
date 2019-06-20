@@ -1,5 +1,7 @@
 package application.controller;
 
+import application.domain.Role;
+import application.domain.StatisticTeam;
 import application.domain.User;
 import application.dto.UserDTO;
 import application.service.SecurityService;
@@ -16,6 +18,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Transactional
 @RestController
@@ -80,6 +86,14 @@ public class UserController {
         } catch (Exception e) {
             return"/error";
         }
+    }
+
+    @GetMapping("/profileRole")
+    public String myProfileRole(Model model){
+
+        User user = userService.findByUsername(((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
+
+        return user.getRoles().iterator().next().getName();
     }
 
 }

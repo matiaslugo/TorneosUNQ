@@ -127,7 +127,12 @@ public class ChampionshipController {
     public Collection<StatisticTeam> getStatisticTeam() {
 
         try {
-            return (Collection<StatisticTeam>) repository.findAll().get(0).getPositions().get(0).getStatisticTeams().stream()
+
+            Positions positions = repository.findLastChampionship().getPositions().get(0);
+
+            positions.ordenar();
+
+            return (Collection<StatisticTeam>) positions.getStatisticTeams().stream()
                     .collect(Collectors.toList());
 
         }
@@ -154,24 +159,40 @@ public class ChampionshipController {
         repository.save(championship);
     }
 
-    /* @GetMapping("/matches")
+    @GetMapping("/matches")
     public Collection<Game> getGames() {
 
-        Fixture currentFixture = repository.findAll().get(0).getFixture();
+        Fixture currentFixture = repository.findLastChampionship().getFixture();
  
-        Collection<Game> matches = (Collection<Game>) currentFixture.getGame().stream()
+        /*Collection<Game> matches = (Collection<Game>) currentFixture.getGame().stream()
                 .collect(Collectors.toList());
 
-        return matches;
-    } */
+        return matches;*/
+        // por ahora se deja traer todos los partidos.
+        List<Game> matches = currentFixture.getGame();
+        List<Game> matchesNotPlayed = new ArrayList<Game>();
 
-    /* @GetMapping("/fixture")
-    public int getFixture() {
+        for (int i = 0; i < matches.size(); ++i) {
 
-        Fixture currentFixture = repository.findAll().get(0).getFixture();
+            Game matchCurrent = matches.get(i);
+            if(!matchCurrent.isPlayed()){
+                matchesNotPlayed.add(matchCurrent);
+            }
 
-        return currentFixture.getCurrentMatchWeek();
-    } */
+        }
+
+        return (Collection<Game>) matchesNotPlayed.stream().collect(Collectors.toList());
+    }
+
+
+    // @GetMapping("/fixture")
+    // public int getFixture() {
+
+    //     Fixture currentFixture = repository.findLastChampionship().getFixture();
+
+    //     return currentFixture.getCurrentMatchWeek();
+    // }
+
 
     @GetMapping("/fixtureGenerate")
     public void fixtureGenerate() {

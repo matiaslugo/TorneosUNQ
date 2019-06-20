@@ -19,7 +19,7 @@ public class Team {
 
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "team_id")
     private List<Player> players = new ArrayList<Player>();
 
@@ -47,9 +47,9 @@ public class Team {
         this.name = name;
     }
 
-    // public List<Player> getPlayers() {
-    //     return players;
-    // }
+    public List<Player> playersAll(){
+        return players;
+    }
 
     public void setPlayers(List<Player> players) {
         this.players = players;

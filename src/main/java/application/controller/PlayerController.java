@@ -65,12 +65,12 @@ public class PlayerController {
 
     @GetMapping("/playerById/{id}")
     public PlayerDTO playerById(@PathVariable String id) {
-        Optional<Player> player = repository.findById(Long.parseLong(id));
+        Player player = repository.findById(Long.parseLong(id)).get();
         PlayerDTO playerDTO = new PlayerDTO();
-        playerDTO.setName(player.get().getName());
-        playerDTO.setLastName(player.get().getLastName());
-        playerDTO.setDni(player.get().getDni());
-        String[] parts = player.get().getBirthdate().toString().split("T");
+        playerDTO.setName(player.getName());
+        playerDTO.setLastName(player.getLastName());
+        playerDTO.setDni(player.getDni());
+        String[] parts = player.getBirthdate().toString().split("T");
         playerDTO.setBirthdate(parts[0]);
         return playerDTO;
     }

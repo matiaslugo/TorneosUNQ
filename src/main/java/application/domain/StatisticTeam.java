@@ -1,9 +1,11 @@
 package application.domain;
 
+import application.dto.GameDTO;
+
 import javax.persistence.*;
 
 @Entity
-public class StatisticTeam {
+public class StatisticTeam{
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -124,5 +126,60 @@ public class StatisticTeam {
 
     public void setGoalsD(int goalsD) {
         this.goalsD = goalsD;
+    }
+
+    public void updateStatisticA(GameDTO match){
+
+        this.setPlayed(this.getPlayed()+1);
+
+        if(match.getGoalsTeamA() > match.getGoalsTeamB()){
+
+            this.setPoints(this.getPoints() + 3);
+            this.setWon(this.getWon() + 1);
+
+        } else {
+            if(match.getGoalsTeamA() < match.getGoalsTeamB()){
+                this.setLost(this.getLost() + 1);
+            } else {
+                this.setPoints(this.getPoints() + 1);
+                this.setDrawn(this.getDrawn() + 1);
+            }
+        }
+
+        int newGoalsF = this.getGoalsF() + match.getGoalsTeamA();
+        int newGoalsA = this.getGoalsA() + match.getGoalsTeamB();
+        int newGoalsD = newGoalsF - newGoalsA;
+
+        this.setGoalsF(newGoalsF);
+        this.setGoalsA(newGoalsA);
+        this.setGoalsD(newGoalsD);
+    }
+
+
+    public void updateStatisticB(GameDTO match){
+
+        this.setPlayed(this.getPlayed()+1);
+
+        if(match.getGoalsTeamB() > match.getGoalsTeamA()){
+
+            this.setPoints(this.getPoints() + 3);
+            this.setWon(this.getWon() + 1);
+
+        } else {
+            if(match.getGoalsTeamB() < match.getGoalsTeamA()){
+                this.setLost(this.getLost() + 1);
+            } else {
+                this.setPoints(this.getPoints() + 1);
+                this.setDrawn(this.getDrawn() + 1);
+            }
+        }
+
+        int newGoalsF = this.getGoalsF() + match.getGoalsTeamB();
+        int newGoalsA = this.getGoalsA() + match.getGoalsTeamA();
+        int newGoalsD = newGoalsF - newGoalsA;
+
+        this.setGoalsF(newGoalsF);
+        this.setGoalsA(newGoalsA);
+        this.setGoalsD(newGoalsD);
     }
 }

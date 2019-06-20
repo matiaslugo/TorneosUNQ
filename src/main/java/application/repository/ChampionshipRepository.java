@@ -10,5 +10,4 @@ public interface ChampionshipRepository extends JpaRepository<Championship, Long
         value = "Select * from championship where id = (select max(id) from championship)", 
         nativeQuery = true)
     Championship findLastChampionship();
-
 }
