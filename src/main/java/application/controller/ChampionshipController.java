@@ -173,4 +173,31 @@ public class ChampionshipController {
         return currentFixture.getCurrentMatchWeek();
     } */
 
+    @GetMapping("/fixtureGenerate")
+    public void fixtureGenerate() {
+
+        String idCurrentChampionship = repository.findLastChampionship().getId().toString();
+        ArrayList<Team> teams = repositoryTeam.findTeamsByChampionshipId(idCurrentChampionship);
+        FixtureGenerator fixtureGenerate = new FixtureGenerator();
+        Fixture fixtureNew = fixtureGenerate.FixtureCreate(teams);
+        Championship currentChampionship = repository.findLastChampionship();
+        currentChampionship.setFixture(fixtureNew);
+        repository.save(currentChampionship);
+        
+    } 
+
+    @GetMapping("/fixture")
+    public Collection<Game> fixture() {
+
+        Championship currentChampionship = repository.findLastChampionship();
+        Collection<Game> games = (Collection<Game>) currentChampionship.getFixture().getGame();
+        if(games.size() == 0)
+        {
+            games = new ArrayList<Game>();
+        }
+
+        return games;
+        
+    }
+
 }

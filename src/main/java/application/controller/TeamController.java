@@ -63,8 +63,8 @@ public class TeamController {
 
             // Get the file and save it somewhere
             byte[] bytes = file.getBytes();
-            Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
-            // Path path = Paths.get(file.getOriginalFilename());
+            // Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
+            Path path = Paths.get(file.getOriginalFilename());
             Files.write(path, bytes);
             redirectAttributes.addFlashAttribute("message",
                     "You successfully uploaded '" + file.getOriginalFilename() + "'");
@@ -74,8 +74,8 @@ public class TeamController {
             String fileName = file.getOriginalFilename();
             String[] parts = fileName.split(".xlsx");
 
-            List<Player> players = excelToBD.setPlayerFromExcel(UPLOADED_FOLDER + file.getOriginalFilename());
-            // List<Player> players = excelToBD.setPlayerFromExcel(file.getOriginalFilename());
+            // List<Player> players = excelToBD.setPlayerFromExcel(UPLOADED_FOLDER + file.getOriginalFilename());
+            List<Player> players = excelToBD.setPlayerFromExcel(file.getOriginalFilename());
 
             Team newTeam = new Team();
             newTeam.setName(parts[0]);
