@@ -122,6 +122,10 @@ public class GameController {
 
         Championship championship = repositoryChampionship.findLastChampionship();
 
+        Fixture fixture = championship.getFixture();
+
+        fixture.setCurrentMatchWeek(match.getMatchweek());
+
         Positions positions;
 
         if(championship.getPositions().isEmpty()){
@@ -185,6 +189,8 @@ public class GameController {
 
             championship.setPositions(newPositions);
         }
+
+
 
         repositoryChampionship.save(championship);
     }

@@ -159,7 +159,7 @@ public class ChampionshipController {
         repository.save(championship);
     }
 
-    @GetMapping("/matches")
+    @GetMapping("/matchesNotPlayed")
     public Collection<Game> getGames() {
 
         Fixture currentFixture = repository.findLastChampionship().getFixture();
@@ -184,14 +184,34 @@ public class ChampionshipController {
         return (Collection<Game>) matchesNotPlayed.stream().collect(Collectors.toList());
     }
 
+    @GetMapping("/matchesPlayed")
+    public Collection<Game> getGamesPlayed() {
 
-    // @GetMapping("/fixture")
-    // public int getFixture() {
+        Fixture currentFixture = repository.findLastChampionship().getFixture();
 
-    //     Fixture currentFixture = repository.findLastChampionship().getFixture();
+        List<Game> matches = currentFixture.getGame();
+        List<Game> matchesPlayed = new ArrayList<Game>();
 
-    //     return currentFixture.getCurrentMatchWeek();
-    // }
+        for (int i = 0; i < matches.size(); ++i) {
+
+            Game matchCurrent = matches.get(i);
+            if(matchCurrent.isPlayed()){
+                matchesPlayed.add(matchCurrent);
+            }
+
+        }
+
+        return (Collection<Game>) matchesPlayed.stream().collect(Collectors.toList());
+    }
+
+
+     @GetMapping("/currentMatchWeek")
+     public int getFixture() {
+
+         Fixture currentFixture = repository.findLastChampionship().getFixture();
+
+         return currentFixture.getCurrentMatchWeek();
+     }
 
 
     @GetMapping("/fixtureGenerate")
