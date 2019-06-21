@@ -70,10 +70,17 @@ public class GameController {
         gameDTO.setTeamAName(game.getTeamA().getName());
         gameDTO.setTeamBId(game.getTeamB().getId());
         gameDTO.setTeamBName(game.getTeamB().getName());
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("MM/dd/yyyy");
-        String strDate = formatter.print(game.getDate());
-        gameDTO.setDate(strDate);
-        gameDTO.setStartTime(game.getStartTime().toString());
+
+        if(game.getDate() != null) {
+            DateTimeFormatter formatter = DateTimeFormat.forPattern("MM/dd/yyyy");
+            String strDate = formatter.print(game.getDate());
+            gameDTO.setDate(strDate);
+        }
+
+        if(game.getStartTime() != null) {
+            gameDTO.setStartTime(game.getStartTime().toString());
+        }
+
         gameDTO.setGoalsTeamA(game.getGoalsTeamA());
         gameDTO.setGoalsTeamB(game.getGoalsTeamB());
         gameDTO.setMatchweek(game.getMatchweek());
@@ -115,7 +122,16 @@ public class GameController {
 
         Championship championship = repositoryChampionship.findLastChampionship();
 
-        Positions positions = championship.getPositions().get(0);
+        Positions positions;
+
+        if(championship.getPositions().isEmpty()){
+
+            positions = new Positions();
+            positions.setName("Liga");
+
+        } else {
+            positions = championship.getPositions().get(0);
+        }
 
         List<StatisticTeam> statisticTeams = positions.getStatisticTeams();
 
@@ -159,6 +175,15 @@ public class GameController {
             newStt.updateStatisticB(match);
 
             positions.addStatisticTeams(newStt);
+        }
+
+        if(championship.getPositions().isEmpty()) {
+
+            List<Positions> newPositions = new ArrayList<>();
+
+            newPositions.add(positions);
+
+            championship.setPositions(newPositions);
         }
 
         repositoryChampionship.save(championship);
