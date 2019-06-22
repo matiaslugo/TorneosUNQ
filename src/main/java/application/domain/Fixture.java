@@ -49,4 +49,13 @@ public class Fixture {
     public void setCurrentMatchWeek(int currentMatchWeek) {
         this.currentMatchWeek = currentMatchWeek;
     }
+
+    public int matchWeekCount()
+    {
+        int maxMatchWeek = 1;
+        for (Game currentGame : Game) {
+            maxMatchWeek = maxMatchWeek > currentGame.getMatchweek() ? maxMatchWeek : currentGame.getMatchweek();
+        }
+        return maxMatchWeek;
+    }
 }

@@ -34,14 +34,6 @@ public class FixtureGenerator {
 			teamsName.add(team.getName());
 		}
 		
-		if (teamsNumber % 2 != 0)
-		{
-			Team teamFree = new Team();
-			teamFree.setName("Libre");
-			teams.add(teamFree);
-			teamsNumber++;
-		}
-		
 		matriz1 = new Team[teamsNumber-1][teamsNumber/2];
 		matriz2 = new Team[teamsNumber-1][teamsNumber/2];
 		jornadas = new String[teamsNumber-1][teamsNumber/2]; 
@@ -120,7 +112,6 @@ public class FixtureGenerator {
 		}
 		return fixtureNew;
 	}
-		
 
 	/**
 	 * @param args

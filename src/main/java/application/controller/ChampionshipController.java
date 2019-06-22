@@ -3,6 +3,7 @@ package application.controller;
 import application.domain.Championship;
 import application.domain.*;
 import application.dto.ChampionshipDTO;
+import application.dto.FixtureDTO;
 import application.repository.ChampionshipRepository;
 import application.repository.TeamRepository;
 import org.joda.time.DateTime;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.Optional;
@@ -170,11 +172,21 @@ public class ChampionshipController {
         return matches;*/
         // por ahora se deja traer todos los partidos.
         List<Game> matches = currentFixture.getGame();
+        List<Game> matchesWithoutFree = new ArrayList<Game>();
+
+        //Elimino de la lista los partidos donde los equipos quedan libre. Asi no los muestra en el listado.
+        for (Game game : matches) {
+            if((game.getTeamA().getName() != "Libre") && (game.getTeamB().getName() != "Libre"))
+            {
+                matchesWithoutFree.add(game);
+            }
+        }
+
         List<Game> matchesNotPlayed = new ArrayList<Game>();
 
-        for (int i = 0; i < matches.size(); ++i) {
+        for (int i = 0; i < matchesWithoutFree.size(); ++i) {
 
-            Game matchCurrent = matches.get(i);
+            Game matchCurrent = matchesWithoutFree.get(i);
             if(!matchCurrent.isPlayed()){
                 matchesNotPlayed.add(matchCurrent);
             }
@@ -198,27 +210,61 @@ public class ChampionshipController {
     public void fixtureGenerate() {
 
         String idCurrentChampionship = repository.findLastChampionship().getId().toString();
+        Championship currentChampionship = repository.findLastChampionship();
+        int teamsCount = repositoryTeam.findTeamsByChampionshipId(idCurrentChampionship).size();
+        if(teamsCount % 2 != 0)
+        {
+            setTeamFree(currentChampionship);
+        }
         ArrayList<Team> teams = repositoryTeam.findTeamsByChampionshipId(idCurrentChampionship);
         FixtureGenerator fixtureGenerate = new FixtureGenerator();
         Fixture fixtureNew = fixtureGenerate.FixtureCreate(teams);
-        Championship currentChampionship = repository.findLastChampionship();
         currentChampionship.setFixture(fixtureNew);
         repository.save(currentChampionship);
         
     } 
 
     @GetMapping("/fixture")
-    public Collection<Game> fixture() {
+    public Collection<FixtureDTO> fixture() {
 
         Championship currentChampionship = repository.findLastChampionship();
-        Collection<Game> games = (Collection<Game>) currentChampionship.getFixture().getGame();
+        List<Game> games = (List<Game>) currentChampionship.getFixture().getGame();
         if(games.size() == 0)
         {
             games = new ArrayList<Game>();
         }
+        Collections.sort(games);
+        ArrayList<FixtureDTO> fixture = new ArrayList<FixtureDTO>();
 
-        return games;
-        
+        for (int matchDateNumber = 1; matchDateNumber <= currentChampionship.getFixture().matchWeekCount();matchDateNumber++) {
+            FixtureDTO newFixtureDTO = new FixtureDTO(matchDateNumber);
+
+            for (Game game : games) 
+            {
+                if (matchDateNumber == game.getMatchweek())
+                {
+                    newFixtureDTO.getGames().add(game);
+                }
+            }
+            fixture.add(newFixtureDTO);
+        }
+        return fixture;
+    }
+
+    public void setTeamFree(Championship currentChampionship)
+    {
+        Team teamFree = repositoryTeam.findTeamByName("Libre");
+        if (teamFree == null)
+		{
+			Team newTeamFree = new Team();
+			newTeamFree.setName("Libre");
+            repositoryTeam.save(newTeamFree);
+            currentChampionship.allTeams().add(newTeamFree);
+		}
+        else
+        {
+            currentChampionship.allTeams().add(teamFree);
+        }
     }
 
 }

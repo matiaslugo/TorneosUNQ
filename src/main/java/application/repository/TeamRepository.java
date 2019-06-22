@@ -20,4 +20,9 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
         value = "SELECT * FROM team t where championship_id = :id", 
         nativeQuery = true)
     ArrayList<Team> findTeamsByChampionshipId(@Param("id") String id);
+
+    @Query(
+        value = "SELECT * FROM team t where name = :name", 
+        nativeQuery = true)
+    Team findTeamByName(@Param("name") String id);
 }

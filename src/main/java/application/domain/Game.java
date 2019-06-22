@@ -5,12 +5,13 @@ import org.joda.time.DateTime;
 import javax.persistence.*;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.hibernate.annotations.Type;
 
 @Entity
-public class Game {
+public class Game  implements Comparable<Game>{
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -152,4 +153,16 @@ public class Game {
         this.played = played;
     }
 
+    @Override
+    public int compareTo(Game g) {
+        return this.id.compareTo(g.id);
+    }
+
+class CompareGame implements Comparator<Game> {
+        @Override
+        public int compare(Game a, Game b) {
+
+            return a.getMatchweek() - (b.getMatchweek());
+        }
+    }
 }

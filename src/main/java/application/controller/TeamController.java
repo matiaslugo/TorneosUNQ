@@ -46,8 +46,10 @@ public class TeamController {
 
     @GetMapping("/teams")
     public Collection<Team> getAll() {
-
-        return (Collection<Team>) repository.findAll();
+        Team freeTeam = repository.findTeamByName("Libre");
+        Collection<Team> teamsWithouFree = (Collection<Team>) repository.findAll();
+        teamsWithouFree.remove(freeTeam);
+        return teamsWithouFree;
     }
 
     @PostMapping("/uploadTeam")
