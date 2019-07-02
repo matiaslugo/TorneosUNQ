@@ -139,8 +139,8 @@ public class GameController {
 
         List<StatisticTeam> statisticTeams = positions.getStatisticTeams();
 
-        boolean localizedTeamA = true;
-        boolean localizedTeamB = true;
+        boolean notLocalizedTeamA = true;
+        boolean notLocalizedTeamB = true;
 
         for (int j = 0; j < statisticTeams.size(); ++j) {
 
@@ -148,21 +148,21 @@ public class GameController {
 
             Team teamCurrent = sttCurrent.getTeam();
 
-            if(teamCurrent.getId() == match.getTeamAId()){
+            if(teamCurrent.getId().equals(match.getTeamAId())){
 
                 sttCurrent.updateStatisticA(match);
 
-                localizedTeamA = false;
+                notLocalizedTeamA = false;
 
             } else {
-                if(teamCurrent.getId() == match.getTeamBId()){
+                if(teamCurrent.getId().equals(match.getTeamBId())){
                     sttCurrent.updateStatisticB(match);
-                    localizedTeamB = false;
+                    notLocalizedTeamB = false;
                 }
             }
         }
 
-        if(localizedTeamA == true){
+        if(notLocalizedTeamA){
             Team teamA = repositoryTeam.findById(match.getTeamAId()).get();
             StatisticTeam newStt = new StatisticTeam(teamA,0,0,0,0,0,0,0,0);
 
@@ -171,7 +171,7 @@ public class GameController {
             positions.addStatisticTeams(newStt);
         }
 
-        if(localizedTeamB == true){
+        if(notLocalizedTeamB){
 
             Team teamB = repositoryTeam.findById(match.getTeamBId()).get();
             StatisticTeam newStt = new StatisticTeam(teamB,0,0,0,0,0,0,0,0);
