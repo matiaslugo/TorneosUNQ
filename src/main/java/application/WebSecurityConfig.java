@@ -35,7 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().configurationSource(corsConfigurationSource())
                 .and()
                 .authorizeRequests()
-                .antMatchers("/resources/**", "/registration", "/login", "/matches", "/fixture", "/tablePositions", "/currentMatchWeek","/matchesPlayed").permitAll()
+                .antMatchers("/resources/**", "/registration", "/login", "/matches", "/fixture", "/tablePositions", "/currentMatchWeek","/matchesPlayed","/matchWeekTotal").permitAll()
                 .antMatchers("/deletePlayer/{id}","/playerUpdate/{id}","/playerById/{id}","/uploadTeam","/matchBy/{id}","/teamBy/{id}", "/matchUpdate/{id}","/matchesNotPlayed").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
                 //.anyRequest().permitAll()
