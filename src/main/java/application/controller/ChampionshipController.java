@@ -242,7 +242,15 @@ public class ChampionshipController {
         currentChampionship.setFixture(fixtureNew);
         repository.save(currentChampionship);
         
-    } 
+    }
+
+    @GetMapping("/matchWeekTotal")
+     public int getMatchWeekTotal() {
+
+         int countTeams = repository.findLastChampionship().allTeams().size();
+
+         return countTeams;
+     }
 
     @GetMapping("/fixture")
     public Collection<FixtureDTO> fixture() {
