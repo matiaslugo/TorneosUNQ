@@ -2,6 +2,7 @@ package application.controller;
 
 import application.domain.*;
 import application.dto.GameDTO;
+import application.dto.GameFixtureDTO;
 import application.dto.StatisticPlayerDTO;
 import application.repository.ChampionshipRepository;
 import application.repository.GameRepository;
@@ -14,12 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -193,5 +191,44 @@ public class GameController {
 
 
         repositoryChampionship.save(championship);
+    }
+
+    GameFixtureDTO mappingGameFixtureDTO(Game game)
+    {
+        GameFixtureDTO newGameDTO = new GameFixtureDTO();
+        newGameDTO.setId(game.getId());
+        newGameDTO.setTeamAId(game.getTeamA().getId());
+        newGameDTO.setTeamAName(game.getTeamA().getName());
+        newGameDTO.setTeamBId(game.getTeamB().getId());
+        newGameDTO.setTeamBName(game.getTeamB().getName());
+
+        if(game.getDate() != null) {
+            DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyyy");
+            String strDate = formatter.print(game.getDate());
+            newGameDTO.setDate(strDate);
+        }
+
+        if(game.getStartTime() != null) {
+            newGameDTO.setStartTime(game.getStartTime().toString());
+        }
+
+        newGameDTO.setGoalsTeamA(game.getGoalsTeamA());
+        newGameDTO.setGoalsTeamB(game.getGoalsTeamB());
+        newGameDTO.setMatchweek(game.getMatchweek());
+
+        return newGameDTO;
+    }
+
+    @PostMapping(path ="/matchUpdateDate/{id}/{date}")
+    public void matchUpdate(@PathVariable String id,@PathVariable String date) {
+        
+        Game gameById = repository.findById(Long.parseLong(id)).get();
+
+        DateTime dateTime = new DateTime(date);
+
+        gameById.setDate(dateTime);
+        
+        repository.save(gameById);
+        
     }
 }

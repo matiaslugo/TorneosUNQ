@@ -2,12 +2,10 @@ package application.dto;
 
 import java.util.ArrayList;
 
-import application.domain.Game;
-
 public class FixtureDTO {
 
     private int matchDateNumber;
-    private ArrayList<Game> games;
+    private ArrayList<GameFixtureDTO> games;
     
     public FixtureDTO(){
 
@@ -15,7 +13,7 @@ public class FixtureDTO {
 
     public FixtureDTO(int matchDateNumber){
         this.matchDateNumber = matchDateNumber;
-        this.games = new ArrayList<Game>();
+        this.games = new ArrayList<GameFixtureDTO>();
     }
 
     public int getMatchDateNumber() {
@@ -26,11 +24,11 @@ public class FixtureDTO {
         this.matchDateNumber = matchDateNumber;
     }
 
-    public ArrayList<Game> getGames() {
+    public ArrayList<GameFixtureDTO> getGames() {
         return games;
     }
 
-    public void setGames(ArrayList<Game> games) {
+    public void setGames(ArrayList<GameFixtureDTO> games) {
         this.games = games;
     }
     

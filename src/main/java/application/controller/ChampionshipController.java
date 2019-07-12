@@ -4,6 +4,8 @@ import application.domain.Championship;
 import application.domain.*;
 import application.dto.ChampionshipDTO;
 import application.dto.FixtureDTO;
+import application.dto.GameDTO;
+import application.dto.GameFixtureDTO;
 import application.repository.ChampionshipRepository;
 import application.repository.TeamRepository;
 import org.joda.time.DateTime;
@@ -29,6 +31,9 @@ public class ChampionshipController {
 
     @Autowired
     private TeamRepository repositoryTeam;
+
+    @Autowired
+    private GameController gameController;
 
     @GetMapping("/championships")
     public Collection<ChampionshipDTO> getAll() {
@@ -253,13 +258,20 @@ public class ChampionshipController {
         {
             games = new ArrayList<Game>();
         }
+
         Collections.sort(games);
+        List<GameFixtureDTO> gamesDTO = new ArrayList<GameFixtureDTO>();
+
+        for (Game game : games) {
+            gamesDTO.add(gameController.mappingGameFixtureDTO(game));
+        }
+        
         ArrayList<FixtureDTO> fixture = new ArrayList<FixtureDTO>();
 
         for (int matchDateNumber = 1; matchDateNumber <= currentChampionship.getFixture().matchWeekCount();matchDateNumber++) {
             FixtureDTO newFixtureDTO = new FixtureDTO(matchDateNumber);
 
-            for (Game game : games) 
+            for (GameFixtureDTO game : gamesDTO) 
             {
                 if (matchDateNumber == game.getMatchweek())
                 {
